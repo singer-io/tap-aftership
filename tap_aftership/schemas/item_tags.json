@@ -1,1 +1,24 @@
-{}
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "name": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "created_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        }
+    }
+}

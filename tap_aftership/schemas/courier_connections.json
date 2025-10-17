@@ -1,1 +1,45 @@
-{}
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "courier_slug": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "credentials": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "api_key": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "created_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "updated_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        }
+    }
+}

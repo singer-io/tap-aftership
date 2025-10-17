@@ -1,1 +1,893 @@
-{}
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "legacy_id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "created_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "updated_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "tracking_number": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "slug": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "active": {
+            "type": [
+                "boolean",
+                "null"
+            ]
+        },
+        "custom_fields": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "additionalProperties": true
+        },
+        "transit_time": {
+            "type": [
+                "integer",
+                "null"
+            ]
+        },
+        "origin_country_region": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "origin_state": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "origin_city": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "origin_postal_code": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "origin_raw_location": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "destination_country_region": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "destination_state": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "destination_city": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "destination_postal_code": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "destination_raw_location": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "courier_destination_country_region": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "courier_estimated_delivery_date": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "estimated_delivery_date": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "estimated_delivery_date_min": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "estimated_delivery_date_max": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                }
+            }
+        },
+        "note": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "order_id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "order_id_path": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "order_date": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "shipment_package_count": {
+            "type": [
+                "integer",
+                "null"
+            ]
+        },
+        "shipment_pickup_date": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "shipment_delivery_date": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "shipment_type": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "shipment_weight": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "value": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "unit": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "signed_by": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "customers": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": "object",
+                "properties": {
+                    "role": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "phone_number": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "email": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "language": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            }
+        },
+        "source": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "tag": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "subtag": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "subtag_message": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "title": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "tracked_count": {
+            "type": [
+                "integer",
+                "null"
+            ]
+        },
+        "last_mile_tracking_supported": {
+            "type": [
+                "boolean",
+                "null"
+            ]
+        },
+        "language": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "checkpoints": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "slug": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "checkpoint_time": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "location": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "city": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "state": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "zip": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "coordinate": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "country_region": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "country_region_name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "message": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "tag": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "subtag": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "subtag_message": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "raw_tag": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "events": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "reason": {
+                                    "type": [
+                                        "object",
+                                        "null"
+                                    ],
+                                    "properties": {
+                                        "code": {
+                                            "type": [
+                                                "string",
+                                                "null"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "source": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            }
+        },
+        "subscribed_smses": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        },
+        "subscribed_emails": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        },
+        "return_to_sender": {
+            "type": [
+                "boolean",
+                "null"
+            ]
+        },
+        "order_promised_delivery_date": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "delivery_type": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "pickup_location": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "pickup_note": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "courier_tracking_link": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "first_attempted_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "courier_redirect_link": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "tracking_account_number": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "tracking_key": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "tracking_ship_date": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "on_time_status": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "on_time_difference": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "order_tags": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        },
+        "aftership_estimated_delivery_date": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "estimated_delivery_date": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "confidence_code": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "estimated_delivery_date_min": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "estimated_delivery_date_max": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                }
+            }
+        },
+        "custom_estimated_delivery_date": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "datetime": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "datetime_min": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "datetime_max": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                }
+            }
+        },
+        "order_number": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "first_estimated_delivery": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "datetime": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "datetime_min": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "datetime_max": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                }
+            }
+        },
+        "latest_estimated_delivery": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "datetime": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "datetime_min": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "datetime_max": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "revise_reason": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "shipment_tags": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        },
+        "courier_connection_id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "last_mile": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "slug": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "tracking_number": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "courier_tracking_link": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "courier_redirect_link": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "first_mile": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "slug": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "tracking_number": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "courier_tracking_link": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "courier_redirect_link": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "carbon_emissions": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "unit": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "value": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "location_id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "shipping_method": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "failed_delivery_attempts": {
+            "type": [
+                "integer",
+                "null"
+            ]
+        },
+        "signature_requirement": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "delivery_location_type": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "aftership_tracking_url": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "aftership_tracking_order_url": {
+            "type": [
+                "string",
+                "null"
+            ]
+        }
+    }
+}
