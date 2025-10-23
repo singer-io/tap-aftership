@@ -6,7 +6,7 @@ class Products(ChildBaseStream):
     replication_method = "INCREMENTAL"
     replication_keys = ["updated_at"]
     data_key = "products"
-    path = "commerce/{api_version}/products"
+    api_version = "2025-07"
+    path = f"commerce/{api_version}/products"
     parent = "stores"
     bookmark_value = None
-

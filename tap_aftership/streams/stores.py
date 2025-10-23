@@ -6,6 +6,6 @@ class Stores(ParentBaseStream):
     replication_method = "INCREMENTAL"
     replication_keys = ["updated_at"]
     data_key = "stores"
-    path = "commerce/{api_version}/stores"
+    api_version = "2025-07"
+    path = f"commerce/{api_version}/stores"
     children = ["orders", "products", "fulfillments"]
-

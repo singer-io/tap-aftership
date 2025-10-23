@@ -1,4 +1,7 @@
-class aftershipError(Exception):
+import time
+
+
+class AftershipError(Exception):
     """class representing Generic Http error."""
 
     def __init__(self, message=None, response=None):
@@ -7,100 +10,134 @@ class aftershipError(Exception):
         self.response = response
 
 
-class aftershipBackoffError(aftershipError):
+class AftershipBackoffError(AftershipError):
     """class representing backoff error handling."""
     pass
 
-class aftershipBadRequestError(aftershipError):
+class AftershipBadRequestError(AftershipError):
     """class representing 400 status code."""
     pass
 
-class aftershipUnauthorizedError(aftershipError):
+class AftershipUnauthorizedError(AftershipError):
     """class representing 401 status code."""
     pass
 
 
-class aftershipForbiddenError(aftershipError):
+class AftershipForbiddenError(AftershipError):
     """class representing 403 status code."""
     pass
 
-class aftershipNotFoundError(aftershipError):
+class AftershipNotFoundError(AftershipError):
     """class representing 404 status code."""
     pass
 
-class aftershipConflictError(aftershipError):
+class AftershipConflictError(AftershipError):
     """class representing 409 status code."""
     pass
 
-class aftershipUnprocessableEntityError(aftershipBackoffError):
+class AftershipUnprocessableEntityError(AftershipBackoffError):
     """class representing 422 status code."""
     pass
 
-class aftershipRateLimitError(aftershipBackoffError):
+class AftershipRateLimitError(AftershipBackoffError):
     """class representing 429 status code."""
-    pass
+    def __init__(self, message=None, response=None):
+        """Initialize the ZohoCRMRateLimitError. Parses the 'rateLimit-resetsponse (if present) and sets the
+            `rateLimit-reset` attribute accordingly.
+        """
+        self.response = response
+        self.retry_after = None
+        self.limit = None
+        self.remaining = None
 
-class aftershipInternalServerError(aftershipBackoffError):
+        if response is not None:
+            headers = response.headers
+            try:
+                self.limit = int(headers.get("rateLimit-limit", 10))
+            except (ValueError, TypeError):
+                self.limit = 10
+
+            try:
+                self.remaining = int(headers.get("rateLimit-remaining", 0))
+            except (ValueError, TypeError):
+                self.remaining = 0
+
+            try:
+                reset_ts = int(headers.get("rateLimit-reset", 0))
+                if reset_ts:
+                    self.retry_after = max(0, reset_ts - int(time.time()))
+            except (ValueError, TypeError):
+                self.retry_after = 1
+
+        base_msg = message or "AfterShip API rate limit exhausted"
+        retry_info = (
+            f"(Retry after {self.retry_after} seconds.)"
+            if self.retry_after is not None
+            else "(Retry after unknown delay.)"
+        )
+        full_message = f"{base_msg} {retry_info}"
+        super().__init__(full_message, response=response)
+
+class AftershipInternalServerError(AftershipBackoffError):
     """class representing 500 status code."""
     pass
 
-class aftershipNotImplementedError(aftershipBackoffError):
+class AftershipNotImplementedError(AftershipBackoffError):
     """class representing 501 status code."""
     pass
 
-class aftershipBadGatewayError(aftershipBackoffError):
+class AftershipBadGatewayError(AftershipBackoffError):
     """class representing 502 status code."""
     pass
 
-class aftershipServiceUnavailableError(aftershipBackoffError):
+class AftershipServiceUnavailableError(AftershipBackoffError):
     """class representing 503 status code."""
     pass
 
 ERROR_CODE_EXCEPTION_MAPPING = {
     400: {
-        "raise_exception": aftershipBadRequestError,
+        "raise_exception": AftershipBadRequestError,
         "message": "A validation exception has occurred."
     },
     401: {
-        "raise_exception": aftershipUnauthorizedError,
+        "raise_exception": AftershipUnauthorizedError,
         "message": "The access token provided is expired, revoked, malformed or invalid for other reasons."
     },
     403: {
-        "raise_exception": aftershipForbiddenError,
+        "raise_exception": AftershipForbiddenError,
         "message": "You are missing the following required scopes: read"
     },
     404: {
-        "raise_exception": aftershipNotFoundError,
+        "raise_exception": AftershipNotFoundError,
         "message": "The resource you have specified cannot be found."
     },
     409: {
-        "raise_exception": aftershipConflictError,
+        "raise_exception": AftershipConflictError,
         "message": "The API request cannot be completed because the requested operation would conflict with an existing item."
     },
     422: {
-        "raise_exception": aftershipUnprocessableEntityError,
+        "raise_exception": AftershipUnprocessableEntityError,
         "message": "The request content itself is not processable by the server."
     },
     429: {
-        "raise_exception": aftershipRateLimitError,
+        "raise_exception": AftershipRateLimitError,
         "message": "The API rate limit for your organisation/application pairing has been exceeded."
     },
     500: {
-        "raise_exception": aftershipInternalServerError,
+        "raise_exception": AftershipInternalServerError,
         "message": "The server encountered an unexpected condition which prevented" \
             " it from fulfilling the request."
     },
     501: {
-        "raise_exception": aftershipNotImplementedError,
+        "raise_exception": AftershipNotImplementedError,
         "message": "The server does not support the functionality required to fulfill the request."
     },
     502: {
-        "raise_exception": aftershipBadGatewayError,
+        "raise_exception": AftershipBadGatewayError,
         "message": "Server received an invalid response."
     },
     503: {
-        "raise_exception": aftershipServiceUnavailableError,
+        "raise_exception": AftershipServiceUnavailableError,
         "message": "API service is currently unavailable."
     }
 }
-

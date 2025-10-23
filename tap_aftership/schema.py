@@ -4,6 +4,7 @@ import singer
 from typing import Dict, Tuple
 from singer import metadata
 from tap_aftership.streams import STREAMS
+from tap_aftership.exceptions import AftershipForbiddenError
 
 LOGGER = singer.get_logger()
 
@@ -37,12 +38,13 @@ def load_schema_references() -> Dict:
     return refs
 
 
-def get_schemas() -> Tuple[Dict, Dict]:
+def get_schemas(client) -> Tuple[Dict, Dict]:
     """
     Load the schema references, prepare metadata for each streams and return schema and metadata for the catalog.
     """
     schemas = {}
     field_metadata = {}
+    error_list = []
 
     refs = load_schema_references()
     for stream_name, stream_obj in STREAMS.items():
@@ -72,9 +74,35 @@ def get_schemas() -> Tuple[Dict, Dict]:
         parent_tap_stream_id = getattr(stream_obj, "parent", None)
         if parent_tap_stream_id:
             mdata = metadata.write(mdata, (), 'parent-tap-stream-id', parent_tap_stream_id)
-
+        mdata = metadata.write(mdata, (), 'selected', True)
         mdata = metadata.to_list(mdata)
         field_metadata[stream_name] = mdata
 
-    return schemas, field_metadata
+        try:
+            # Here it call the check_access method to check whether stream have read permission or not.
+            # If stream does not have read permission then append that stream name to list and at the end of all streams
+            # raise forbidden error with proper message containing stream names.
+            stream_obj = stream_obj(client=client)
+            if not stream_obj.parent:
+                response = stream_obj.check_access()
+                if response.get("meta", {}).get("code") != 200:
+                    raise AftershipForbiddenError
+        except AftershipForbiddenError:
+            error_list.append(stream_name) # Append stream name to the error_list
 
+    if error_list:
+        total_stream = len(STREAMS.values())
+        streams_name = ", ".join(error_list)
+        if len(error_list) != total_stream:
+            message = "The account credentials supplied do not have 'read' access to the following stream(s): {}. "\
+                "The data for these streams would not be collected due to lack of required permission.".format(streams_name)
+            # If atleast one stream have read permission then just print warning message for all streams
+            # which does not have read permission
+            LOGGER.warning(message)
+        else:
+            message ="HTTP-error-code: 403, Error: The account credentials supplied do not have 'read' access to any "\
+            "of streams supported by the tap. Data collection cannot be initiated due to lack of permissions."
+            # If none of the streams are having the 'read' access, then the code will raise an error
+            raise AftershipForbiddenError(message)
+
+    return schemas, field_metadata

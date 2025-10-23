@@ -5,7 +5,7 @@ class Fulfillments(ChildBaseStream):
     key_properties = ["id"]
     replication_method = "INCREMENTAL"
     replication_keys = ["updated_at"]
-    path = "commerce/{api_version}/fulfillments"
+    api_version = "2025-07"
+    path = f"commerce/{api_version}/fulfillments"
     parent = "stores"
     bookmark_value = None
-

@@ -6,5 +6,5 @@ class QueryCoverages(IncrementalStream):
     replication_method = "INCREMENTAL"
     replication_keys = ["updated_at"]
     data_key = "coverages"
-    path = "admin/{api_version}/coverages"
-
+    api_version = "2022-01"
+    path = f"admin/{api_version}/coverages"

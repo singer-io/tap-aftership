@@ -5,5 +5,5 @@ class ItemReturns(FullTableStream):
     key_properties = ["id"]
     replication_method = "FULL_TABLE"
     data_key = "returns"
-    path = "returns/{api_version}/returns"
-
+    api_version = "2025-07"
+    path = f"returns/{api_version}/returns"

@@ -5,5 +5,5 @@ class Roles(FullTableStream):
     key_properties = ["code"]
     replication_method = "FULL_TABLE"
     data_key = "roles"
-    path = "admin/{api_version}/roles"
-
+    api_version = "2022-01"
+    path = f"admin/{api_version}/roles"

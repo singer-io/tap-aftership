@@ -5,5 +5,5 @@ class Memberships(FullTableStream):
     key_properties = ["id"]
     replication_method = "FULL_TABLE"
     data_key = "memberships"
-    path = "admin/{api_version}/memberships"
-
+    api_version = "2022-01"
+    path = f"admin/{api_version}/memberships"

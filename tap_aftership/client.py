@@ -1,4 +1,5 @@
 from typing import Any, Dict, Mapping, Optional, Tuple
+import time
 
 import backoff
 import requests
@@ -6,7 +7,13 @@ from requests import session
 from requests.exceptions import Timeout, ConnectionError, ChunkedEncodingError
 from singer import get_logger, metrics
 
-from tap_aftership.exceptions import ERROR_CODE_EXCEPTION_MAPPING, aftershipError, aftershipBackoffError
+from tap_aftership.exceptions import (
+    ERROR_CODE_EXCEPTION_MAPPING,
+    AftershipError,
+    AftershipRateLimitError,
+    AftershipInternalServerError,
+    AftershipServiceUnavailableError
+)
 
 LOGGER = get_logger()
 REQUEST_TIMEOUT = 300
@@ -23,17 +30,27 @@ def raise_for_error(response: requests.Response) -> None:
     except Exception:
         response_json = {}
     if response.status_code not in [200, 201, 204]:
-        if response_json.get("error"):
-            message = f"HTTP-error-code: {response.status_code}, Error: {response_json.get('error')}"
-        else:
-            error_message = ERROR_CODE_EXCEPTION_MAPPING.get(
-                response.status_code, {}
-            ).get("message", "Unknown Error")
-            message = f"HTTP-error-code: {response.status_code}, Error: {response_json.get('message', error_message)}"
+        error_message = (
+            response_json.get("error")
+            or response_json.get("message")
+            or response_json.get("meta", {}).get("message")
+            or ERROR_CODE_EXCEPTION_MAPPING.get(response.status_code, {}).get("message", "Unknown Error")
+        )
+
+        message = f"HTTP-error-code: {response.status_code}, Error: {error_message}"
         exc = ERROR_CODE_EXCEPTION_MAPPING.get(response.status_code, {}).get(
-            "raise_exception", aftershipError
+            "raise_exception", AftershipError
         )
         raise exc(message, response) from None
+
+def wait_if_retry_after(details):
+    """Backoff handler that checks for a 'retry_after' attribute in the exception
+    and sleeps for the specified duration to respect API rate limits.
+    """
+    exc = details['exception']
+    if hasattr(exc, 'retry_after') and exc.retry_after is not None:
+        LOGGER.warning(f"Rate limited. Retrying in {exc.retry_after} seconds...")
+        time.sleep(exc.retry_after)
 
 class Client:
     """
@@ -49,6 +66,7 @@ class Client:
         self.config = config
         self._session = session()
         self.base_url = "https://api.aftership.com"
+        self.shipping_base_url = "https://api.aftership.com/postmen/v3"
         config_request_timeout = config.get("request_timeout")
         self.request_timeout = float(config_request_timeout) if config_request_timeout else REQUEST_TIMEOUT
 
@@ -64,7 +82,7 @@ class Client:
 
     def authenticate(self, headers: Dict, params: Dict) -> Tuple[Dict, Dict]:
         """Authenticates the request with the token"""
-        headers["as-api-key"] = self.config["api_access"]
+        headers["as-api-key"] = self.config["api_key"]
         return headers, params
 
     def make_request(
@@ -99,10 +117,20 @@ class Client:
             ConnectionError,
             ChunkedEncodingError,
             Timeout,
-            aftershipBackoffError
+            AftershipInternalServerError,
+            AftershipServiceUnavailableError
         ),
         max_tries=5,
         factor=2,
+    )
+    @backoff.on_exception(
+        wait_gen=backoff.constant,
+        on_backoff=wait_if_retry_after,
+        exception=(
+            AftershipRateLimitError,
+        ),
+        max_tries=5,
+        interval=1
     )
     def __make_request(
         self, method: str, endpoint: str, **kwargs
@@ -119,4 +147,3 @@ class Client:
                 raise ValueError(f"Unsupported method: {method}")
 
         return response.json()
-
