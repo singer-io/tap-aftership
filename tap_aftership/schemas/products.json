@@ -7,6 +7,12 @@
                 "null"
             ]
         },
+        "store_id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
         "title": {
             "type": [
                 "string",
