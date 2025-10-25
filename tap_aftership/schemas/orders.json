@@ -10,19 +10,11 @@
                 "null"
             ]
         },
-        "store": {
+        "store_id": {
             "type": [
-                "object",
+                "string",
                 "null"
-            ],
-            "properties": {
-                "id": {
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                }
-            }
+            ]
         },
         "name": {
             "type": [

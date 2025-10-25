@@ -7,6 +7,12 @@
                 "null"
             ]
         },
+        "store_id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
         "order_id": {
             "type": [
                 "string",
