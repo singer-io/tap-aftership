@@ -31,7 +31,6 @@ class BaseStream(ABC):
     page_size = 100
     next_page_key = None
     next_page_param = None
-    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
     children = []
     parent = ""
     data_key = ""
@@ -46,6 +45,7 @@ class BaseStream(ABC):
         self.metadata = metadata.to_map(catalog.metadata) if catalog else {}
         self.child_to_sync = []
         self.params = {}
+        self.headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
         self.data_payload = {}
 
     @property
@@ -113,7 +113,6 @@ class BaseStream(ABC):
                 self.url_endpoint,
                 self.params,
                 self.headers,
-                body=json.dumps(self.data_payload),
                 path=self.path
             )
             raw_data = response.get("data", {})
@@ -125,8 +124,23 @@ class BaseStream(ABC):
             yield from raw_records
 
             pagination_token = None
-            if self.next_page_key and isinstance(raw_data, dict):
-                pagination_token = self.get_nested_value(raw_data, self.next_page_key, None)
+            if isinstance(raw_data, dict):
+                pagination_info = raw_data.get("pagination", {})
+                has_next_page = pagination_info.get("has_next_page")
+
+                if self.next_page_param == "page" and pagination_info:
+                    current_page = pagination_info.get("page", 1)
+                    limit = pagination_info.get("limit", self.page_size)
+                    total = pagination_info.get("total")
+
+                    if has_next_page is True:
+                        pagination_token = current_page + 1
+                    elif has_next_page is None and total is not None:
+                        if total > current_page * limit:
+                            pagination_token = current_page + 1
+
+                elif self.next_page_param != "page" and self.next_page_key:
+                    pagination_token = self.get_nested_value(raw_data, self.next_page_key, None)
 
             if not pagination_token:
                 break
@@ -143,17 +157,11 @@ class BaseStream(ABC):
             )
             raise err
 
-    def update_params(self, **kwargs) -> None:
+    def update_headers(self, **kwargs) -> None:
         """
-        Update params for the stream
+        Update headers for the stream
         """
-        self.params.update(kwargs)
-
-    def update_data_payload(self, **kwargs) -> None:
-        """
-        Update JSON body for the stream
-        """
-        self.data_payload.update(kwargs)
+        self.headers.update(kwargs)
 
     def modify_object(self, record: Dict, parent_record: Dict = None) -> Dict:
         """
@@ -229,12 +237,9 @@ class IncrementalStream(BaseStream):
     ) -> Dict:
         """Implementation for `type: Incremental` stream."""
         bookmark_date = self.get_bookmark(state, self.tap_stream_id)
-        LOGGER.info(f"bookmark_date::{bookmark_date}")
         current_max_bookmark_date = bookmark_date
-        # self.update_params(updated_since=bookmark_date)
-        self.update_data_payload(parent_obj=parent_obj)
+        self.update_headers(parent_obj=parent_obj)
         self.url_endpoint = self.get_url_endpoint(parent_obj)
-        LOGGER.info(f"url_endpoint::{self.url_endpoint}")
 
         with metrics.record_counter(self.tap_stream_id) as counter:
             for record in self.get_records():
@@ -272,10 +277,11 @@ class FullTableStream(BaseStream):
         parent_obj: Dict = None,
     ) -> Dict:
         """Abstract implementation for `type: Fulltable` stream."""
+        self.update_headers(parent_obj=parent_obj)
         self.url_endpoint = self.get_url_endpoint(parent_obj)
-        self.update_data_payload(parent_obj=parent_obj)
         with metrics.record_counter(self.tap_stream_id) as counter:
             for record in self.get_records():
+                record = self.modify_object(record, parent_obj)
                 transformed_record = transformer.transform(
                     record, self.schema, self.metadata
                 )
@@ -342,6 +348,7 @@ class ChildBaseStream(IncrementalStream):
             self.bookmark_value = super().get_bookmark(state, stream)
 
         return self.bookmark_value
+
 
 class ShippingMixin:
     def get_url_endpoint(self, parent_obj: Dict = None) -> str:

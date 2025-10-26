@@ -6,4 +6,6 @@ class CancelLabels(ShippingMixin, IncrementalStream):
     replication_method = "INCREMENTAL"
     replication_keys = ["updated_at"]
     data_key = "cancel_labels"
-    path = "/cancel-labels"
+    path = "cancel-labels"
+    next_page_param = "next_token"
+    next_page_key = "next_token"

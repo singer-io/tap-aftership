@@ -42,7 +42,7 @@ class AftershipUnprocessableEntityError(AftershipBackoffError):
 class AftershipRateLimitError(AftershipBackoffError):
     """class representing 429 status code."""
     def __init__(self, message=None, response=None):
-        """Initialize the ZohoCRMRateLimitError. Parses the 'rateLimit-resetsponse (if present) and sets the
+        """Initialize the AftershipRateLimitError. Parses the 'rateLimit-reset' response (if present) and sets the
             `rateLimit-reset` attribute accordingly.
         """
         self.response = response

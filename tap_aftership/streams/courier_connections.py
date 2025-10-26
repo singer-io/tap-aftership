@@ -8,3 +8,5 @@ class CourierConnections(IncrementalStream):
     data_key = "courier_connections"
     api_version = "2025-07"
     path = f"tracking/{api_version}/courier-connections"
+    next_page_param = "cursor"
+    next_page_key = "pagination.next_cursor"

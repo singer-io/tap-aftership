@@ -74,7 +74,6 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
         parent_tap_stream_id = getattr(stream_obj, "parent", None)
         if parent_tap_stream_id:
             mdata = metadata.write(mdata, (), 'parent-tap-stream-id', parent_tap_stream_id)
-        mdata = metadata.write(mdata, (), 'selected', True)
         mdata = metadata.to_list(mdata)
         field_metadata[stream_name] = mdata
 
@@ -88,7 +87,9 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
                 if response.get("meta", {}).get("code") != 200:
                     raise AftershipForbiddenError
         except AftershipForbiddenError:
-            error_list.append(stream_name) # Append stream name to the error_list
+            error_list.append(stream_name)
+            if stream_obj.children:
+                error_list.extend(stream_obj.children)
 
     if error_list:
         total_stream = len(STREAMS.values())

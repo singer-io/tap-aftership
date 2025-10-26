@@ -7,3 +7,5 @@ class Memberships(FullTableStream):
     data_key = "memberships"
     api_version = "2022-01"
     path = f"admin/{api_version}/memberships"
+    next_page_param = "page"
+    next_page_key = "page"

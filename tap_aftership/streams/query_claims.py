@@ -8,3 +8,6 @@ class QueryClaims(IncrementalStream):
     data_key = "claims"
     api_version = "2022-01"
     path = f"admin/{api_version}/claims"
+    page_size = 20
+    next_page_param = "page"
+    next_page_key = "page"

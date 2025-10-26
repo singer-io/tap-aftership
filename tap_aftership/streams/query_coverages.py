@@ -8,3 +8,4 @@ class QueryCoverages(IncrementalStream):
     data_key = "coverages"
     api_version = "2022-01"
     path = f"admin/{api_version}/coverages"
+    page_size = 20
