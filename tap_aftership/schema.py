@@ -101,7 +101,7 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
             # which does not have read permission
             LOGGER.warning(message)
         else:
-            message ="HTTP-error-code: 403, Error: The account credentials supplied do not have 'read' access to any "\
+            message = "HTTP-error-code: 403, Error: The account credentials supplied do not have 'read' access to any "\
             "of streams supported by the tap. Data collection cannot be initiated due to lack of permissions."
             # If none of the streams are having the 'read' access, then the code will raise an error
             raise AftershipForbiddenError(message)

@@ -65,7 +65,7 @@ class AftershipRateLimitError(AftershipBackoffError):
             try:
                 reset_ts = int(headers.get("rateLimit-reset", 0))
                 if reset_ts:
-                    self.retry_after = max(0, reset_ts - int(time.time()))
+                    self.retry_after = max(0, int(reset_ts - time.time()))
             except (ValueError, TypeError):
                 self.retry_after = 1
 
