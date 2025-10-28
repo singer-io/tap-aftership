@@ -18,7 +18,9 @@
     "streams": [
         {
             "name": "trackings",
-            "key_properties": "id",
+            "key_properties": [
+                "id"
+            ],
             "replication_method": "INCREMENTAL",
             "replication_keys": [
                 "updated_at"

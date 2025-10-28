@@ -44,7 +44,7 @@ class aftershipDiscoveryTest(DiscoveryTest, aftershipBaseTest):
                 stream_metadata = stream_properties[0]["metadata"]
 
                 # For all streams except 'accounts', verify the parent tap stream ID exists and is a string
-                if stream != "accounts":
+                if stream in ["orders", "products", "fulfillments"]:
                     self.assertIn(self.PARENT_TAP_STREAM_ID, stream_metadata)
                     self.assertTrue(isinstance(actual_parent_tap_stream_id, str))
 

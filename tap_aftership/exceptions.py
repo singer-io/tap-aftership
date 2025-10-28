@@ -51,19 +51,38 @@ class AftershipRateLimitError(AftershipBackoffError):
         self.remaining = None
 
         if response is not None:
-            headers = response.headers
+            headers = response.headers or {}
+
+            limit_val = (
+                headers.get("x-ratelimit-limit")
+                or headers.get("X-RateLimit-Limit")
+                or headers.get("ratelimit-limit")
+            )
+
+            remaining_val = (
+                headers.get("x-ratelimit-remaining")
+                or headers.get("X-RateLimit-Remaining")
+                or headers.get("ratelimit-remaining")
+            )
+
+            reset_val = (
+                headers.get("x-ratelimit-reset")
+                or headers.get("X-RateLimit-Reset")
+                or headers.get("ratelimit-reset")
+            )
+
             try:
-                self.limit = int(headers.get("rateLimit-limit", 10))
+                self.limit = int(limit_val) if limit_val is not None else 10
             except (ValueError, TypeError):
                 self.limit = 10
 
             try:
-                self.remaining = int(headers.get("rateLimit-remaining", 0))
+                self.remaining = int(remaining_val) if remaining_val is not None else 0
             except (ValueError, TypeError):
                 self.remaining = 0
 
             try:
-                reset_ts = int(headers.get("rateLimit-reset", 0))
+                reset_ts = int(reset_val) if reset_val is not None else 0
                 if reset_ts:
                     self.retry_after = max(0, int(reset_ts - time.time()))
             except (ValueError, TypeError):

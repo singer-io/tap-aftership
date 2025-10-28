@@ -35,7 +35,7 @@ class aftershipBaseTest(BaseCase):
         """The expected streams and metadata about the streams."""
         return {
             "trackings": {
-                cls.PRIMARY_KEYS: { "i, d" },
+                cls.PRIMARY_KEYS: { "id" },
                 cls.REPLICATION_METHOD: cls.INCREMENTAL,
                 cls.REPLICATION_KEYS: { "updated_at" },
                 cls.OBEYS_START_DATE: False,
