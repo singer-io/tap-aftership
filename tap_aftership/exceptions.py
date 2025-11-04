@@ -53,39 +53,29 @@ class AftershipRateLimitError(AftershipBackoffError):
         if response is not None:
             headers = response.headers or {}
 
-            limit_val = (
-                headers.get("x-ratelimit-limit")
-                or headers.get("X-RateLimit-Limit")
-                or headers.get("ratelimit-limit")
-            )
+            limit_keys = [
+                "x-ratelimit-limit",
+                "X-RateLimit-Limit",
+                "ratelimit-limit"
+            ]
+            remaining_keys = [
+                "x-ratelimit-remaining",
+                "X-RateLimit-Remaining",
+                "ratelimit-remaining"
+            ]
+            reset_keys = [
+                "x-ratelimit-reset",
+                "X-RateLimit-Reset",
+                "ratelimit-reset"
+            ]
 
-            remaining_val = (
-                headers.get("x-ratelimit-remaining")
-                or headers.get("X-RateLimit-Remaining")
-                or headers.get("ratelimit-remaining")
-            )
+            self.limit = self._get_header_int(headers, limit_keys, default=10)
+            self.remaining = self._get_header_int(headers, remaining_keys, default=0)
+            reset_ts = self._get_header_int(headers, reset_keys, default=0)
 
-            reset_val = (
-                headers.get("x-ratelimit-reset")
-                or headers.get("X-RateLimit-Reset")
-                or headers.get("ratelimit-reset")
-            )
-
-            try:
-                self.limit = int(limit_val) if limit_val is not None else 10
-            except (ValueError, TypeError):
-                self.limit = 10
-
-            try:
-                self.remaining = int(remaining_val) if remaining_val is not None else 0
-            except (ValueError, TypeError):
-                self.remaining = 0
-
-            try:
-                reset_ts = int(reset_val) if reset_val is not None else 0
-                if reset_ts:
-                    self.retry_after = max(0, int(reset_ts - time.time()))
-            except (ValueError, TypeError):
+            if reset_ts:
+                self.retry_after = max(0, int(reset_ts - time.time()))
+            else:
                 self.retry_after = 1
 
         base_msg = message or "AfterShip API rate limit exhausted"
@@ -96,6 +86,17 @@ class AftershipRateLimitError(AftershipBackoffError):
         )
         full_message = f"{base_msg} {retry_info}"
         super().__init__(full_message, response=response)
+
+    def _get_header_int(headers, keys, default=0):
+        """Try to get the first valid integer value from a list of header keys."""
+        for key in keys:
+            val = headers.get(key)
+            if val is not None:
+                try:
+                    return int(val)
+                except (ValueError, TypeError):
+                    break
+        return default
 
 class AftershipInternalServerError(AftershipBackoffError):
     """class representing 500 status code."""
