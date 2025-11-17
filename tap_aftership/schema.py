@@ -84,15 +84,18 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
             stream_obj = stream_obj(client=client)
             if not stream_obj.parent:
                 response = stream_obj.check_access()
-                if response.get("meta", {}).get("code") != 200:
+                if response.get("meta", {}).get("code") != 200 or \
+                response.get("meta", {}).get("message", "ok").lower() != 'ok':
                     raise AftershipForbiddenError
+                else:
+                    message = response.get("meta", {}).get("message")
         except AftershipForbiddenError:
             error_list.append(stream_name)
             if stream_obj.children:
                 error_list.extend(stream_obj.children)
 
     if error_list:
-        total_stream = len(STREAMS.values())
+        total_stream = len([stream for stream in STREAMS.values() if not stream.parent])
         streams_name = ", ".join(error_list)
         if len(error_list) != total_stream:
             message = "The account credentials supplied do not have 'read' access to the following stream(s): {}. "\
