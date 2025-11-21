@@ -102,8 +102,9 @@ class BaseStream(ABC):
         """Interacts with api client interaction and pagination."""
         self.params["limit"] = self.page_size
         pagination_token = None
+        has_more_pages = True
 
-        while True:
+        while has_more_pages:
 
             if pagination_token and self.next_page_param:
                 self.params[self.next_page_param] = pagination_token
@@ -142,8 +143,7 @@ class BaseStream(ABC):
                 elif self.next_page_param != "page" and self.next_page_key:
                     pagination_token = self.get_nested_value(raw_data, self.next_page_key, None)
 
-            if not pagination_token:
-                break
+            has_more_pages = pagination_token is not None
 
     def write_schema(self) -> None:
         """
