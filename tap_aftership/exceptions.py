@@ -50,7 +50,7 @@ class AftershipRateLimitError(AftershipBackoffError):
         self.limit = None
         self.remaining = None
 
-        if response is not None:
+        if response:
             headers = response.headers or {}
 
             limit_keys = [
@@ -87,11 +87,11 @@ class AftershipRateLimitError(AftershipBackoffError):
         full_message = f"{base_msg} {retry_info}"
         super().__init__(full_message, response=response)
 
-    def _get_header_int(headers, keys, default=0):
+    def _get_header_int(self, headers, keys, default=0):
         """Try to get the first valid integer value from a list of header keys."""
         for key in keys:
             val = headers.get(key)
-            if val is not None:
+            if val:
                 try:
                     return int(val)
                 except (ValueError, TypeError):

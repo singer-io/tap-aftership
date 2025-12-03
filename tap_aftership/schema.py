@@ -87,8 +87,6 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
                 if response.get("meta", {}).get("code") != 200 or \
                 response.get("meta", {}).get("message", "ok").lower() != 'ok':
                     raise AftershipForbiddenError
-                else:
-                    message = response.get("meta", {}).get("message")
         except AftershipForbiddenError:
             error_list.append(stream_name)
             if stream_obj.children:
@@ -100,7 +98,7 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
         if len(error_list) != total_stream:
             message = "The account credentials supplied do not have 'read' access to the following stream(s): {}. "\
                 "The data for these streams would not be collected due to lack of required permission.".format(streams_name)
-            # If atleast one stream have read permission then just print warning message for all streams
+            # If at least one stream have read permission then just print warning message for all streams
             # which does not have read permission
             LOGGER.warning(message)
         else:
