@@ -18,7 +18,9 @@
     "streams": [
         {
             "name": "trackings",
-            "key_properties": "id",
+            "key_properties": [
+                "id"
+            ],
             "replication_method": "INCREMENTAL",
             "replication_keys": [
                 "updated_at"
@@ -133,7 +135,8 @@
         {
             "name": "orders",
             "key_properties": [
-                "id"
+                "id",
+                "store_id"
             ],
             "replication_method": "INCREMENTAL",
             "replication_keys": [
@@ -148,12 +151,11 @@
         {
             "name": "products",
             "key_properties": [
-                "id"
+                "id",
+                "store_id"
             ],
-            "replication_method": "INCREMENTAL",
-            "replication_keys": [
-                "updated_at"
-            ],
+            "replication_method": "FULL_TABLE",
+            "replication_keys": null,
             "data_key": "products",
             "path": "commerce/{api_version}/products",
             "parent": "stores",
@@ -163,13 +165,14 @@
         {
             "name": "fulfillments",
             "key_properties": [
-                "id"
+                "id",
+                "store_id"
             ],
             "replication_method": "INCREMENTAL",
             "replication_keys": [
                 "updated_at"
             ],
-            "data_key": null,
+            "data_key": "fulfillments",
             "path": "commerce/{api_version}/fulfillments",
             "parent": "stores",
             "children": [],

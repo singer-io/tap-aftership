@@ -6,5 +6,7 @@ class CourierConnections(IncrementalStream):
     replication_method = "INCREMENTAL"
     replication_keys = ["updated_at"]
     data_key = "courier_connections"
-    path = "tracking/{api_version}/courier-connections"
-
+    api_version = "2025-07"
+    path = f"tracking/{api_version}/courier-connections"
+    next_page_param = "cursor"
+    next_page_key = "pagination.next_cursor"

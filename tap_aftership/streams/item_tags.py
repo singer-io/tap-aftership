@@ -6,5 +6,5 @@ class ItemTags(IncrementalStream):
     replication_method = "INCREMENTAL"
     replication_keys = ["created_at"]
     data_key = "item_tags"
-    path = "returns/{api_version}/item-tags"
-
+    api_version = "2025-07"
+    path = f"returns/{api_version}/item-tags"
