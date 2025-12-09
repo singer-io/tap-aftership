@@ -5,5 +5,5 @@ class Couriers(FullTableStream):
     key_properties = ["slug"]
     replication_method = "FULL_TABLE"
     data_key = "couriers"
-    path = "tracking/{api_version}/couriers"
-
+    api_version = "2025-07"
+    path = f"tracking/{api_version}/couriers"

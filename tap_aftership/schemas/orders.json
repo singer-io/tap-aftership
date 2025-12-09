@@ -1,1 +1,887 @@
-{}
+{
+    "type": [
+        "object",
+        "null"
+    ],
+    "properties": {
+        "id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "store_id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "name": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "number": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "currency": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "status": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "financial_status": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "fulfillment_status": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "order_total": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "shipping_total": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "tax_total": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "discount_total": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "subtotal": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "items": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "object",
+                    "null"
+                ],
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "sku": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "quantity": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "unit_weight": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "properties": {
+                            "unit": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            }
+                        }
+                    },
+                    "unit_price": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "properties": {
+                            "currency": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "amount": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            }
+                        }
+                    },
+                    "product_title": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "product_variant_title": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "discount": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "tax": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "product_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "product_variant_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "hs_code": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "origin_country_region": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "image_urls": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    },
+                    "product_tags": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    },
+                    "product_categories": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    },
+                    "returnable_quantity": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    }
+                }
+            }
+        },
+        "note": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "source_created_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "source_updated_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "created_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "updated_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "customer": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "id": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "first_name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "last_name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "emails": {
+                    "type": [
+                        "array",
+                        "null"
+                    ],
+                    "items": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                },
+                "locale": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "phones": {
+                    "type": [
+                        "array",
+                        "null"
+                    ],
+                    "items": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            }
+        },
+        "shipping_address": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "street_1": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "street_2": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "street_3": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "city": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "state": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "postal_code": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "country_region": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "company": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "first_name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "last_name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "email": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "phone": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "billing_address": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "street_1": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "street_2": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "street_3": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "city": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "state": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "postal_code": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "country_region": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "company": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "first_name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "last_name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "email": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "phone": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "tags": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        },
+        "shipping_method": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "delivery_method": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "pickup_location": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "location_id": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "address": {
+                    "type": [
+                        "object",
+                        "null"
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "street_1": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "street_2": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "street_3": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "city": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "state": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "postal_code": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "country_region": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "company": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "first_name": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "last_name": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "email": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "phone": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "coordinate": {
+                            "type": [
+                                "object",
+                                "null"
+                            ],
+                            "properties": {
+                                "latitude": {
+                                    "type": [
+                                        "number",
+                                        "null"
+                                    ]
+                                },
+                                "longitude": {
+                                    "type": [
+                                        "number",
+                                        "null"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "opening_hours": {
+                    "type": [
+                        "object",
+                        "null"
+                    ],
+                    "properties": {
+                        "sunday": {
+                            "type": [
+                                "object",
+                                "null"
+                            ],
+                            "properties": {
+                                "open": {
+                                    "type": [
+                                        "boolean",
+                                        "null"
+                                    ]
+                                },
+                                "from": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "to": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                }
+                            }
+                        },
+                        "monday": {
+                            "type": [
+                                "object",
+                                "null"
+                            ],
+                            "properties": {
+                                "open": {
+                                    "type": [
+                                        "boolean",
+                                        "null"
+                                    ]
+                                },
+                                "from": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "to": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                }
+                            }
+                        },
+                        "tuesday": {
+                            "type": [
+                                "object",
+                                "null"
+                            ],
+                            "properties": {
+                                "open": {
+                                    "type": [
+                                        "boolean",
+                                        "null"
+                                    ]
+                                },
+                                "from": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "to": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                }
+                            }
+                        },
+                        "wednesday": {
+                            "type": [
+                                "object",
+                                "null"
+                            ],
+                            "properties": {
+                                "open": {
+                                    "type": [
+                                        "boolean",
+                                        "null"
+                                    ]
+                                },
+                                "from": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "to": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                }
+                            }
+                        },
+                        "thursday": {
+                            "type": [
+                                "object",
+                                "null"
+                            ],
+                            "properties": {
+                                "open": {
+                                    "type": [
+                                        "boolean",
+                                        "null"
+                                    ]
+                                },
+                                "from": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "to": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                }
+                            }
+                        },
+                        "friday": {
+                            "type": [
+                                "object",
+                                "null"
+                            ],
+                            "properties": {
+                                "open": {
+                                    "type": [
+                                        "boolean",
+                                        "null"
+                                    ]
+                                },
+                                "from": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "to": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                }
+                            }
+                        },
+                        "saturday": {
+                            "type": [
+                                "object",
+                                "null"
+                            ],
+                            "properties": {
+                                "open": {
+                                    "type": [
+                                        "boolean",
+                                        "null"
+                                    ]
+                                },
+                                "from": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "to": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "pickup_info": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "instructions": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "estimated_ready_for_pickup_at": {
+                    "type": [
+                        "object",
+                        "null"
+                    ],
+                    "properties": {
+                        "min": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "format": "date-time"
+                        },
+                        "max": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "format": "date-time"
+                        }
+                    }
+                },
+                "pickup_deadline_at": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                }
+            }
+        }
+    }
+}

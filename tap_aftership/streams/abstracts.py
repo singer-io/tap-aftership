@@ -29,21 +29,23 @@ class BaseStream(ABC):
     url_endpoint = ""
     path = ""
     page_size = 100
-    next_page_key = "cursor"
-    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    next_page_key = None
+    next_page_param = None
     children = []
     parent = ""
     data_key = ""
     parent_bookmark_key = ""
-    http_method = "POST"
+    http_method = "GET"
+    bookmark_value = None
 
     def __init__(self, client=None, catalog=None) -> None:
         self.client = client
         self.catalog = catalog
-        self.schema = catalog.schema.to_dict()
-        self.metadata = metadata.to_map(catalog.metadata)
+        self.schema = catalog.schema.to_dict() if catalog else {}
+        self.metadata = metadata.to_map(catalog.metadata) if catalog else {}
         self.child_to_sync = []
         self.params = {}
+        self.headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
         self.data_payload = {}
 
     @property
@@ -96,25 +98,52 @@ class BaseStream(ABC):
          - https://github.com/singer-io/getting-started/blob/master/docs/SYNC_MODE.md
         """
 
-
     def get_records(self) -> Iterator:
         """Interacts with api client interaction and pagination."""
-        self.params["next_cursor"] = self.page_size
-        next_page = 1
-        while next_page:
+        self.params["limit"] = self.page_size
+        pagination_token = None
+        has_more_pages = True
+
+        while has_more_pages:
+
+            if pagination_token and self.next_page_param:
+                self.params[self.next_page_param] = pagination_token
+
             response = self.client.make_request(
                 self.http_method,
                 self.url_endpoint,
                 self.params,
                 self.headers,
-                body=json.dumps(self.data_payload),
                 path=self.path
             )
-            raw_records = response.get(self.data_key, [])
-            next_page = response.get(self.next_page_key)
+            raw_data = response.get("data", {})
+            raw_records = raw_data.get(self.data_key, []) if self.data_key else raw_data
 
-            self.params[self.next_page_key] = next_page
+            if not isinstance(raw_records, list):
+                raw_records = [raw_records]
+
             yield from raw_records
+
+            pagination_token = None
+            if isinstance(raw_data, dict):
+                pagination_info = raw_data.get("pagination", {})
+                has_next_page = pagination_info.get("has_next_page")
+
+                if self.next_page_param == "page" and pagination_info:
+                    current_page = pagination_info.get("page", 1)
+                    limit = pagination_info.get("limit", self.page_size)
+                    total = pagination_info.get("total")
+
+                    if has_next_page is True:
+                        pagination_token = current_page + 1
+                    elif has_next_page is None and total is not None:
+                        if total > current_page * limit:
+                            pagination_token = current_page + 1
+
+                elif self.next_page_param != "page" and self.next_page_key:
+                    pagination_token = self.get_nested_value(raw_data, self.next_page_key, None)
+
+            has_more_pages = pagination_token is not None
 
     def write_schema(self) -> None:
         """
@@ -128,17 +157,11 @@ class BaseStream(ABC):
             )
             raise err
 
-    def update_params(self, **kwargs) -> None:
+    def update_headers(self, **kwargs) -> None:
         """
-        Update params for the stream
+        Update headers for the stream
         """
-        self.params.update(kwargs)
-
-    def update_data_payload(self, **kwargs) -> None:
-        """
-        Update JSON body for the stream
-        """
-        self.data_payload.update(kwargs)
+        self.headers.update(kwargs)
 
     def modify_object(self, record: Dict, parent_record: Dict = None) -> Dict:
         """
@@ -152,6 +175,32 @@ class BaseStream(ABC):
         """
         return self.url_endpoint or f"{self.client.base_url}/{self.path}"
 
+    def get_nested_value(self, data, key_path, default=None):
+        """
+        Recursively get a value from nested dicts using dot-separated key path.
+        """
+        keys = key_path.split(".")
+        for key in keys:
+            if isinstance(data, dict):
+                data = data.get(key, default)
+            else:
+                return default
+        return data
+
+    def check_access(self):
+        '''
+        Check whether the permission was given to access stream resources or not.
+        '''
+        self.url_endpoint = self.get_url_endpoint()
+
+        response = self.client.make_request(
+                self.http_method,
+                self.url_endpoint,
+                self.params,
+                self.headers
+            )
+
+        return response
 
 class IncrementalStream(BaseStream):
     """Base Class for Incremental Stream."""
@@ -189,8 +238,7 @@ class IncrementalStream(BaseStream):
         """Implementation for `type: Incremental` stream."""
         bookmark_date = self.get_bookmark(state, self.tap_stream_id)
         current_max_bookmark_date = bookmark_date
-        self.update_params(updated_since=bookmark_date)
-        self.update_data_payload(parent_obj=parent_obj)
+        self.update_headers(parent_obj=parent_obj)
         self.url_endpoint = self.get_url_endpoint(parent_obj)
 
         with metrics.record_counter(self.tap_stream_id) as counter:
@@ -229,10 +277,11 @@ class FullTableStream(BaseStream):
         parent_obj: Dict = None,
     ) -> Dict:
         """Abstract implementation for `type: Fulltable` stream."""
+        self.update_headers(parent_obj=parent_obj)
         self.url_endpoint = self.get_url_endpoint(parent_obj)
-        self.update_data_payload(parent_obj=parent_obj)
         with metrics.record_counter(self.tap_stream_id) as counter:
             for record in self.get_records():
+                record = self.modify_object(record, parent_obj)
                 transformed_record = transformer.transform(
                     record, self.schema, self.metadata
                 )
@@ -300,3 +349,10 @@ class ChildBaseStream(IncrementalStream):
 
         return self.bookmark_value
 
+
+class ShippingMixin:
+    def get_url_endpoint(self, parent_obj: Dict = None) -> str:
+        """
+        Get the URL endpoint for the stream
+        """
+        return self.url_endpoint or f"{self.client.shipping_base_url}/{self.path}"

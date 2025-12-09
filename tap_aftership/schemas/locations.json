@@ -1,1 +1,147 @@
-{}
+{
+    "type": "object",
+    "properties": {
+        "location_id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "name": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "distance": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "distance_unit": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "phone": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "services": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        },
+        "address": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "street": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "postal_code": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "city": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "state": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "country": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "longitude": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "latitude": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "business_hours": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "object",
+                    "null"
+                ],
+                "properties": {
+                    "day_of_week": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "open_time": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "close_time": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            }
+        },
+        "location_type": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "business_classification": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "instructions": {
+            "type": [
+                "string",
+                "null"
+            ]
+        }
+    }
+}
