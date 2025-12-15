@@ -41,6 +41,7 @@ class AftershipUnprocessableEntityError(AftershipBackoffError):
 
 class AftershipRateLimitError(AftershipBackoffError):
     """class representing 429 status code."""
+
     def __init__(self, message=None, response=None):
         """Initialize the AftershipRateLimitError. Parses the 'rateLimit-reset' response (if present) and sets the
             `rateLimit-reset` attribute accordingly.
@@ -50,7 +51,7 @@ class AftershipRateLimitError(AftershipBackoffError):
         self.limit = None
         self.remaining = None
 
-        if response:
+        if response is not None:
             headers = response.headers or {}
 
             limit_keys = [
@@ -74,7 +75,7 @@ class AftershipRateLimitError(AftershipBackoffError):
             reset_ts = self._get_header_int(headers, reset_keys, default=0)
 
             if reset_ts:
-                self.retry_after = max(0, int(reset_ts - time.time()))
+                self.retry_after = max(0, int(int(reset_ts) - time.time()))
             else:
                 self.retry_after = 1
 
