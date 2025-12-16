@@ -72,7 +72,14 @@ class Client:
         self.base_url = "https://api.aftership.com"
         self.shipping_base_url = "https://api.aftership.com/postmen/v3"
         config_request_timeout = config.get("request_timeout")
-        self.request_timeout = float(config_request_timeout) if config_request_timeout else REQUEST_TIMEOUT
+        if config_request_timeout:
+            try:
+                timeout_value = float(config_request_timeout)
+                self.request_timeout = timeout_value if timeout_value > 0 else REQUEST_TIMEOUT
+            except (ValueError, TypeError):
+                self.request_timeout = REQUEST_TIMEOUT
+        else:
+            self.request_timeout = REQUEST_TIMEOUT
 
     def __enter__(self):
         self.check_api_credentials()
