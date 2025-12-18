@@ -337,7 +337,7 @@
         }
     ],
     "tap_tester_creds": {
-        "api_key": "API_KEY"
+        "api_key": "TAP_AFTERSHIP_API_KEY "
     },
     "author": "Stitch",
     "third_party_dependencies": [
