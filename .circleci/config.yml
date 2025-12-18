@@ -28,7 +28,6 @@ jobs:
           command: |
             source /usr/local/share/virtualenvs/tap-aftership/bin/activate
             uv pip install pytest coverage parameterized
-            # nosetests --with-coverage --cover-erase --cover-package=tap_aftership --cover-html-dir=htmlcov tests/unittests
             coverage run -m pytest tests/unittests
             coverage html
           when: always
