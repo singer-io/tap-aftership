@@ -143,7 +143,8 @@ class BaseStream(ABC):
                 elif self.next_page_param != "page" and self.next_page_key:
                     pagination_token = self.get_nested_value(raw_data, self.next_page_key, None)
 
-            has_more_pages = pagination_token is not None
+            # Returns False when pagination_token is None, "", 0, False, or any falsy value
+            has_more_pages = bool(pagination_token)
 
     def write_schema(self) -> None:
         """
@@ -162,6 +163,12 @@ class BaseStream(ABC):
         Update headers for the stream
         """
         self.headers.update(kwargs)
+
+    def update_params(self, state: Dict = None, parent_obj: Dict = None, **kwargs) -> None:
+        """
+        Update params for the stream
+        """
+        self.params.update(kwargs)
 
     def modify_object(self, record: Dict, parent_record: Dict = None) -> Dict:
         """
@@ -240,6 +247,7 @@ class IncrementalStream(BaseStream):
         current_max_bookmark_date = bookmark_date
         self.update_headers(parent_obj=parent_obj)
         self.url_endpoint = self.get_url_endpoint(parent_obj)
+        self.update_params(state=state, parent_obj=parent_obj)
 
         with metrics.record_counter(self.tap_stream_id) as counter:
             for record in self.get_records():
@@ -279,6 +287,7 @@ class FullTableStream(BaseStream):
         """Abstract implementation for `type: Fulltable` stream."""
         self.update_headers(parent_obj=parent_obj)
         self.url_endpoint = self.get_url_endpoint(parent_obj)
+        self.update_params(state=state, parent_obj=parent_obj)
         with metrics.record_counter(self.tap_stream_id) as counter:
             for record in self.get_records():
                 record = self.modify_object(record, parent_obj)
@@ -351,8 +360,23 @@ class ChildBaseStream(IncrementalStream):
 
 
 class ShippingMixin:
+    # Flag to control whether created_at_min parameter should be added
+    use_created_at_min = False
+
     def get_url_endpoint(self, parent_obj: Dict = None) -> str:
         """
         Get the URL endpoint for the stream
         """
         return self.url_endpoint or f"{self.client.shipping_base_url}/{self.path}"
+
+    def update_params(self, state: Dict = None, parent_obj: Dict = None, **kwargs) -> None:
+        """
+        Update params for shipping streams with created_at_min parameter
+        """
+        super().update_params(state=state, parent_obj=parent_obj, **kwargs)
+
+        if self.use_created_at_min and hasattr(self, 'replication_keys') and self.replication_keys:
+            # Use the get_bookmark method from IncrementalStream base class
+            bookmark = self.get_bookmark(state or {}, self.tap_stream_id)
+            if bookmark:
+                self.params["created_at_min"] = bookmark

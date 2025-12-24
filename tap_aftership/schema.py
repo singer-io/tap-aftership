@@ -89,8 +89,6 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
                     raise AftershipForbiddenError
         except AftershipForbiddenError:
             error_list.append(stream_name)
-            if stream_obj.children:
-                error_list.extend(stream_obj.children)
 
     if error_list:
         total_stream = len([stream for stream in STREAMS.values() if not stream.parent])

@@ -9,3 +9,4 @@ class CancelPickups(ShippingMixin, IncrementalStream):
     path = "cancel-pickups"
     next_page_param = "next_token"
     next_page_key = "next_token"
+    use_created_at_min = True
