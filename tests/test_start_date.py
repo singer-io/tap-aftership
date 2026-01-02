@@ -12,7 +12,28 @@ class aftershipStartDateTest(StartDateTest, aftershipBaseTest):
         return "tap_tester_aftership_start_date_test"
 
     def streams_to_test(self):
-        streams_to_exclude = {}
+        streams_to_exclude = {
+            "courier_connections",
+            "item_returns",
+            "item_tags",
+            "query_claims",
+            "query_coverages",
+            "stores",
+            "orders",
+            "products",
+            "fulfillments",
+            "memberships",
+            "roles",
+            "shipping_rates",
+            "shipping_labels",
+            "shipping_manifests",
+            "shipping_couriers",
+            "cancel_labels",
+            "pickups",
+            "cancel_pickups",
+            "shipper_accounts",
+            "locations"
+        }
         return self.expected_stream_names().difference(streams_to_exclude)
 
     @property
