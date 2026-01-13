@@ -12,6 +12,7 @@ class Products(FullTableStream):
     bookmark_value = None
     next_page_param = "page"
     next_page_key = "page"
+    page_size = 50
 
     def update_headers(self, **kwargs) -> None:
         """Update headers for the stream."""

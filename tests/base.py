@@ -107,12 +107,12 @@ class aftershipBaseTest(BaseCase):
                 cls.PARENT_TAP_STREAM_ID: "stores"
             },
             "fulfillments": {
-                cls.PRIMARY_KEYS: { "id", "store_id" },
+                cls.PRIMARY_KEYS: { "id", "store_id", "order_id" },
                 cls.REPLICATION_METHOD: cls.INCREMENTAL,
                 cls.REPLICATION_KEYS: { "updated_at" },
                 cls.OBEYS_START_DATE: False,
                 cls.API_LIMIT: 100,
-                cls.PARENT_TAP_STREAM_ID: "stores"
+                cls.PARENT_TAP_STREAM_ID: "orders"
             },
             "memberships": {
                 cls.PRIMARY_KEYS: { "id" },

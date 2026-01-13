@@ -84,10 +84,19 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
             stream_obj = stream_obj(client=client)
             if not stream_obj.parent:
                 response = stream_obj.check_access()
-                if response.get("meta", {}).get("code") != 200 or \
-                response.get("meta", {}).get("message", "ok").lower() != 'ok':
+                # Handle both response structures: with 'meta' key and without
+                meta = response.get("meta", response)
+                code = meta.get("code")
+                message = meta.get("message", "").lower()
+
+                # Accept multiple success codes (200, 20000) and success messages
+                success_codes = {200, 20000}
+                success_messages = {'ok', 'the request has been processed successfully.'}
+
+                if code not in success_codes and message not in success_messages:
                     raise AftershipForbiddenError
         except AftershipForbiddenError:
+            LOGGER.warning("Stream %s does not have read permission", stream_name)
             error_list.append(stream_name)
 
     if error_list:

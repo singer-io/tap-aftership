@@ -8,6 +8,7 @@ class Stores(ParentBaseStream):
     data_key = "stores"
     api_version = "2025-07"
     path = f"commerce/{api_version}/stores"
-    children = ["orders", "products", "fulfillments"]
+    children = ["orders", "products"]
     next_page_param = "page"
     next_page_key = "page"
+    page_size = 50

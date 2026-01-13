@@ -1,3 +1,4 @@
+from typing import Dict
 from tap_aftership.streams.abstracts import IncrementalStream
 
 class Trackings(IncrementalStream):
@@ -10,3 +11,12 @@ class Trackings(IncrementalStream):
     path = f"tracking/{api_version}/trackings"
     next_page_param = "cursor"
     next_page_key = "pagination.next_cursor"
+
+    def update_params(self, state: Dict = None, parent_obj: Dict = None, **kwargs) -> None:
+        """
+        Update params for shipping streams with updated_at_min parameter
+        """
+        super().update_params(state=state, parent_obj=parent_obj, **kwargs)
+
+        bookmark = self.get_bookmark(state or {}, self.tap_stream_id)
+        self.params["updated_at_min"] = bookmark

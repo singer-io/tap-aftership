@@ -29,13 +29,33 @@ def raise_for_error(response: requests.Response) -> None:
         response_json = response.json()
     except Exception:
         response_json = {}
+
     if response.status_code not in [200, 201, 204]:
-        error_message = (
-            response_json.get("error")
-            or response_json.get("message")
-            or response_json.get("meta", {}).get("message")
-            or ERROR_CODE_EXCEPTION_MAPPING.get(response.status_code, {}).get("message", "Unknown Error")
-        )
+        # Try to extract error message from various possible locations in response
+        error_message = None
+
+        # Check meta object
+        meta = response_json.get("meta", {})
+        if not error_message and meta:
+            error_message = meta.get("message")
+
+            # Include error details if present
+            errors = meta.get("errors", [])
+            if errors and isinstance(errors, list):
+                error_details = []
+                for err in errors:
+                    if isinstance(err, dict):
+                        path = err.get("path", "")
+                        info = err.get("info", "")
+                        if path or info:
+                            error_details.append(f"{path}: {info}" if path else info)
+
+                if error_details:
+                    error_message = f"{error_message} | Details: {'; '.join(error_details)}"
+
+        # Fallback to default error message
+        if not error_message:
+            error_message = ERROR_CODE_EXCEPTION_MAPPING.get(response.status_code, {}).get("message", "Unknown Error")
 
         message = f"HTTP-error-code: {response.status_code}, Error: {error_message}"
         exc = ERROR_CODE_EXCEPTION_MAPPING.get(response.status_code, {}).get(
@@ -103,7 +123,9 @@ class Client:
         params: Optional[Dict[str, Any]] = None,
         headers: Optional[Dict[str, Any]] = None,
         body: Optional[Dict[str, Any]] = None,
-        path: Optional[str] = None
+        path: Optional[str] = None,
+        skip_retry: bool = False,
+        skip_error_check: bool = False
     ) -> Any:
         """
         Sends an HTTP request to the specified API endpoint.
@@ -113,13 +135,48 @@ class Client:
         body = body or {}
         endpoint = endpoint or f"{self.base_url}/{path}"
         headers, params = self.authenticate(headers, params)
+
+        if skip_retry:
+            return self.__make_request_without_retry(
+                method, endpoint,
+                headers=headers,
+                params=params,
+                data=body,
+                timeout=self.request_timeout,
+                skip_error_check=skip_error_check
+            )
+
         return self.__make_request(
             method, endpoint,
             headers=headers,
             params=params,
             data=body,
-            timeout=self.request_timeout
+            timeout=self.request_timeout,
+            skip_error_check=skip_error_check
         )
+
+    def __execute_request(
+        self, method: str, endpoint: str, skip_error_check: bool = False, **kwargs
+    ) -> Optional[Mapping[Any, Any]]:
+        """Core HTTP request execution logic."""
+        method = method.upper()
+        with metrics.http_request_timer(endpoint):
+            if method in ("GET", "POST"):
+                if method == "GET":
+                    kwargs.pop("data", None)
+                response = self._session.request(method, endpoint, **kwargs)
+                if not skip_error_check:
+                    raise_for_error(response)
+            else:
+                raise ValueError(f"Unsupported method: {method}")
+
+        return response.json()
+
+    def __make_request_without_retry(
+        self, method: str, endpoint: str, skip_error_check: bool = False, **kwargs
+    ) -> Optional[Mapping[Any, Any]]:
+        """Performs HTTP Operations without retry."""
+        return self.__execute_request(method, endpoint, skip_error_check=skip_error_check, **kwargs)
 
     @backoff.on_exception(
         wait_gen=backoff.expo,
@@ -144,17 +201,7 @@ class Client:
         jitter=None
     )
     def __make_request(
-        self, method: str, endpoint: str, **kwargs
+        self, method: str, endpoint: str, skip_error_check: bool = False, **kwargs
     ) -> Optional[Mapping[Any, Any]]:
-        """Performs HTTP Operations."""
-        method = method.upper()
-        with metrics.http_request_timer(endpoint):
-            if method in ("GET", "POST"):
-                if method == "GET":
-                    kwargs.pop("data", None)
-                response = self._session.request(method, endpoint, **kwargs)
-                raise_for_error(response)
-            else:
-                raise ValueError(f"Unsupported method: {method}")
-
-        return response.json()
+        """Performs HTTP Operations with retry."""
+        return self.__execute_request(method, endpoint, skip_error_check=skip_error_check, **kwargs)

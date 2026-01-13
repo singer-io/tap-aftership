@@ -199,12 +199,15 @@ class BaseStream(ABC):
         Check whether the permission was given to access stream resources or not.
         '''
         self.url_endpoint = self.get_url_endpoint()
+        self.params = {"limit": 1}
 
         response = self.client.make_request(
                 self.http_method,
                 self.url_endpoint,
                 self.params,
-                self.headers
+                self.headers,
+                skip_retry=True,
+                skip_error_check=True
             )
 
         return response
