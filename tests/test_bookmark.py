@@ -9,20 +9,7 @@ class aftershipBookMarkTest(BookmarkTest, aftershipBaseTest):
     initial_bookmarks = {
         "bookmarks": {
             "trackings": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "courier_connections": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "item_tags": { "created_at" : "2020-01-01T00:00:00Z"},
-            "query_claims": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "query_coverages": { "updated_at" : "2020-01-01T00:00:00Z"},
             "stores": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "orders": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "products": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "fulfillments": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "shipping_rates": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "shipping_labels": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "shipping_manifests": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "cancel_labels": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "pickups": { "updated_at" : "2020-01-01T00:00:00Z"},
-            "cancel_pickups": { "updated_at" : "2020-01-01T00:00:00Z"},
             "shipper_accounts": { "updated_at" : "2020-01-01T00:00:00Z"},
         }
     }
@@ -31,27 +18,27 @@ class aftershipBookMarkTest(BookmarkTest, aftershipBaseTest):
         return "tap_tester_aftership_bookmark_test"
 
     def streams_to_test(self):
-        streams_to_exclude = {
+        # streams to exclude from the start date test due to access or insufficient data
+        streams_to_exclude = set({
+            "couriers",  # Full table stream, not incremental
             "courier_connections",
             "item_returns",
             "item_tags",
             "query_claims",
             "query_coverages",
-            "stores",
             "orders",
-            "products",
             "fulfillments",
+            "products",  # Full table child stream, not incremental
             "memberships",
             "roles",
             "shipping_rates",
-            "shipping_labels",
+            "shipping_labels",  # Only 1 unique replication value - not enough for bookmark test
             "shipping_manifests",
             "shipping_couriers",
             "cancel_labels",
             "pickups",
             "cancel_pickups",
-            "shipper_accounts",
             "locations"
-        }
+        })
         return self.expected_stream_names().difference(streams_to_exclude)
 

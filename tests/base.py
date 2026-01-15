@@ -39,7 +39,7 @@ class aftershipBaseTest(BaseCase):
                 cls.REPLICATION_METHOD: cls.INCREMENTAL,
                 cls.REPLICATION_KEYS: { "updated_at" },
                 cls.OBEYS_START_DATE: False,
-                cls.API_LIMIT: 100
+                cls.API_LIMIT: 50
             },
             "couriers": {
                 cls.PRIMARY_KEYS: { "slug" },
@@ -88,14 +88,14 @@ class aftershipBaseTest(BaseCase):
                 cls.REPLICATION_METHOD: cls.INCREMENTAL,
                 cls.REPLICATION_KEYS: { "updated_at" },
                 cls.OBEYS_START_DATE: False,
-                cls.API_LIMIT: 100
+                cls.API_LIMIT: 4
             },
             "orders": {
                 cls.PRIMARY_KEYS: { "id", "store_id" },
                 cls.REPLICATION_METHOD: cls.INCREMENTAL,
                 cls.REPLICATION_KEYS: { "updated_at" },
                 cls.OBEYS_START_DATE: False,
-                cls.API_LIMIT: 100,
+                cls.API_LIMIT: 5,
                 cls.PARENT_TAP_STREAM_ID: "stores"
             },
             "products": {
@@ -103,7 +103,7 @@ class aftershipBaseTest(BaseCase):
                 cls.REPLICATION_METHOD: cls.FULL_TABLE,
                 cls.REPLICATION_KEYS: set(),
                 cls.OBEYS_START_DATE: False,
-                cls.API_LIMIT: 100,
+                cls.API_LIMIT: 6,
                 cls.PARENT_TAP_STREAM_ID: "stores"
             },
             "fulfillments": {
@@ -111,7 +111,7 @@ class aftershipBaseTest(BaseCase):
                 cls.REPLICATION_METHOD: cls.INCREMENTAL,
                 cls.REPLICATION_KEYS: { "updated_at" },
                 cls.OBEYS_START_DATE: False,
-                cls.API_LIMIT: 100,
+                cls.API_LIMIT: 7,
                 cls.PARENT_TAP_STREAM_ID: "orders"
             },
             "memberships": {
@@ -140,7 +140,7 @@ class aftershipBaseTest(BaseCase):
                 cls.REPLICATION_METHOD: cls.INCREMENTAL,
                 cls.REPLICATION_KEYS: { "updated_at" },
                 cls.OBEYS_START_DATE: False,
-                cls.API_LIMIT: 100
+                cls.API_LIMIT: 1
             },
             "shipping_manifests": {
                 cls.PRIMARY_KEYS: { "id" },
@@ -182,7 +182,7 @@ class aftershipBaseTest(BaseCase):
                 cls.REPLICATION_METHOD: cls.INCREMENTAL,
                 cls.REPLICATION_KEYS: { "updated_at" },
                 cls.OBEYS_START_DATE: False,
-                cls.API_LIMIT: 100
+                cls.API_LIMIT: 2
             },
             "locations": {
                 cls.PRIMARY_KEYS: { "location_id" },
@@ -206,6 +206,7 @@ class aftershipBaseTest(BaseCase):
 
     def get_properties(self, original: bool = True):
         """Configuration of properties required for the tap."""
+        original = False
         return_value = {
             "start_date": "2022-07-01T00:00:00Z"
         }

@@ -13,16 +13,13 @@ class aftershipAutomaticFields(MinimumSelectionTest, aftershipBaseTest):
         return "tap_tester_aftership_automatic_fields_test"
 
     def streams_to_test(self):
-        streams_to_exclude = {
+        # streams to exclude from the start date test due to access or insufficient data
+        streams_to_exclude = set({
             "courier_connections",
             "item_returns",
             "item_tags",
             "query_claims",
             "query_coverages",
-            "stores",
-            "orders",
-            "products",
-            "fulfillments",
             "memberships",
             "roles",
             "shipping_rates",
@@ -32,8 +29,7 @@ class aftershipAutomaticFields(MinimumSelectionTest, aftershipBaseTest):
             "cancel_labels",
             "pickups",
             "cancel_pickups",
-            "shipper_accounts",
             "locations"
-        }
+        })
         return self.expected_stream_names().difference(streams_to_exclude)
 
