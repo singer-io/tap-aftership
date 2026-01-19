@@ -129,7 +129,7 @@
             "data_key": "stores",
             "path": "commerce/{api_version}/stores",
             "parent": null,
-            "children": ["orders", "products", "fulfillments"],
+            "children": ["orders", "products"],
             "doc_link": "https://www.aftership.com/docs/commerce/yc24p1srfyqiv-get-stores"
         },
         {
@@ -145,7 +145,7 @@
             "data_key": "orders",
             "path": "commerce/{api_version}/orders",
             "parent": "stores",
-            "children": [],
+            "children": ["fulfillments"],
             "doc_link": "https://www.aftership.com/docs/commerce/kr3dy6e5ma49n-get-orders"
         },
         {
@@ -166,7 +166,8 @@
             "name": "fulfillments",
             "key_properties": [
                 "id",
-                "store_id"
+                "store_id",
+                "order_id"
             ],
             "replication_method": "INCREMENTAL",
             "replication_keys": [
@@ -174,7 +175,7 @@
             ],
             "data_key": "fulfillments",
             "path": "commerce/{api_version}/fulfillments",
-            "parent": "stores",
+            "parent": "orders",
             "children": [],
             "doc_link": "https://www.aftership.com/docs/commerce/6dafeb354dd2b-get-fulfillments"
         },
