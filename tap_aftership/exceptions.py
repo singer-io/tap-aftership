@@ -115,6 +115,10 @@ class AftershipServiceUnavailableError(AftershipBackoffError):
     """class representing 503 status code."""
     pass
 
+class AftershipGatewayTimeoutError(AftershipBackoffError):
+    """class representing 504 status code."""
+    pass
+
 ERROR_CODE_EXCEPTION_MAPPING = {
     400: {
         "raise_exception": AftershipBadRequestError,
@@ -160,5 +164,9 @@ ERROR_CODE_EXCEPTION_MAPPING = {
     503: {
         "raise_exception": AftershipServiceUnavailableError,
         "message": "API service is currently unavailable."
+    },
+    504: {
+        "raise_exception": AftershipGatewayTimeoutError,
+        "message": "The server did not receive a timely response from an upstream server."
     }
 }
