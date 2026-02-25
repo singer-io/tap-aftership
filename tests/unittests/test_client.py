@@ -4,7 +4,21 @@ import requests
 from unittest.mock import patch, MagicMock
 from requests.exceptions import Timeout, ConnectionError, ChunkedEncodingError
 from tap_aftership.client import Client
-from tap_aftership.exceptions import *
+from tap_aftership.exceptions import (
+    AftershipBackoffError,
+    AftershipBadRequestError,
+    AftershipBadGatewayError,
+    AftershipConflictError,
+    AftershipGatewayTimeoutError,
+    AftershipForbiddenError,
+    AftershipInternalServerError,
+    AftershipNotImplementedError,
+    AftershipNotFoundError,
+    AftershipServiceUnavailableError,
+    AftershipUnauthorizedError,
+    AftershipUnprocessableEntityError,
+    AftershipRateLimitError,
+)
 
 default_config = {
     "base_url": "https://api.example.com",
@@ -180,6 +194,7 @@ class TestClient(unittest.TestCase):
                 self.client._Client__make_request("GET", "https://api.example.com/resource")
 
             self.assertEqual(mock_request.call_count, 5)
+
     @parameterized.expand([
         ["505 error - HTTP Version Not Supported", 505, "Unknown Error"],
         ["506 error - Variant Also Negotiates", 506, "Unknown Error"],
