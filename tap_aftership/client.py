@@ -192,7 +192,7 @@ class Client:
         ),
         max_tries=5,
         factor=2,
-        giveup=lambda e: isinstance(e, (AftershipNotImplementedError, AftershipRateLimitError)),
+        giveup=lambda e: isinstance(e, AftershipRateLimitError),
     )
     @backoff.on_exception(
         backoff.runtime,

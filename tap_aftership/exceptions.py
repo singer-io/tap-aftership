@@ -35,7 +35,7 @@ class AftershipConflictError(AftershipError):
     """class representing 409 status code."""
     pass
 
-class AftershipUnprocessableEntityError(AftershipBackoffError):
+class AftershipUnprocessableEntityError(AftershipError):
     """class representing 422 status code."""
     pass
 
@@ -103,7 +103,7 @@ class AftershipInternalServerError(AftershipBackoffError):
     """class representing 500 status code."""
     pass
 
-class AftershipNotImplementedError(AftershipBackoffError):
+class AftershipNotImplementedError(AftershipError):
     """class representing 501 status code."""
     pass
 
