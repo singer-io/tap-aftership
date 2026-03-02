@@ -7,14 +7,11 @@ from tap_aftership.client import Client
 from tap_aftership.exceptions import (
     AftershipBackoffError,
     AftershipBadRequestError,
-    AftershipBadGatewayError,
     AftershipConflictError,
-    AftershipGatewayTimeoutError,
+    AftershipError,
     AftershipForbiddenError,
     AftershipInternalServerError,
-    AftershipNotImplementedError,
     AftershipNotFoundError,
-    AftershipServiceUnavailableError,
     AftershipUnauthorizedError,
     AftershipUnprocessableEntityError,
     AftershipRateLimitError,
@@ -126,7 +123,6 @@ class TestClient(unittest.TestCase):
         ["Timeout", Timeout],
         ["ChunkedEncodingError", ChunkedEncodingError],
         ["InternalServerError", AftershipInternalServerError],
-        ["ServiceUnavailableError", AftershipServiceUnavailableError],
     ])
     def test_make_request_with_retry_on_connection_errors(self, name, exception_type):
         """
@@ -148,7 +144,6 @@ class TestClient(unittest.TestCase):
         ["404 error", 404, MockResponse(404), AftershipNotFoundError, "The resource you have specified cannot be found."],
         ["409 error", 409, MockResponse(409), AftershipConflictError, "The API request cannot be completed because the requested operation would conflict with an existing item."],
         ["422 error", 422, MockResponse(422), AftershipUnprocessableEntityError, "The request content itself is not processable by the server."],
-        ["501 error", 501, MockResponse(501), AftershipNotImplementedError, "The server does not support the functionality required to fulfill the request."],
     ])
     def test_make_request_http_failure_without_retry(self, test_name, error_code, mock_response, error, error_message):
 
@@ -163,9 +158,6 @@ class TestClient(unittest.TestCase):
     @parameterized.expand([
         ["429 error", 429, MockResponse(429), AftershipRateLimitError, "The API rate limit for your organisation/application pairing has been exceeded. (Retry after 1 seconds.)"],
         ["500 error", 500, MockResponse(500), AftershipInternalServerError, "The server encountered an unexpected condition which prevented it from fulfilling the request."],
-        ["502 error", 502, MockResponse(502), AftershipBadGatewayError, "Server received an invalid response."],
-        ["503 error", 503, MockResponse(503), AftershipServiceUnavailableError, "API service is currently unavailable."],
-        ["504 error", 504, MockResponse(504), AftershipGatewayTimeoutError, "The server did not receive a timely response from an upstream server."],
     ])
     @patch("time.sleep")
     def test_make_request_http_failure_with_retry(self, test_name, error_code, mock_response, error, error_message, mock_sleep):
@@ -194,6 +186,10 @@ class TestClient(unittest.TestCase):
             self.assertEqual(mock_request.call_count, 5)
 
     @parameterized.expand([
+        ["501 error - Not Implemented", 501, "Unknown Error"],
+        ["502 error - Bad Gateway", 502, "Unknown Error"],
+        ["503 error - Service Unavailable", 503, "Unknown Error"],
+        ["504 error - Gateway Timeout", 504, "Unknown Error"],
         ["505 error - HTTP Version Not Supported", 505, "Unknown Error"],
         ["506 error - Variant Also Negotiates", 506, "Unknown Error"],
         ["507 error - Insufficient Storage", 507, "Unknown Error"],
@@ -215,3 +211,25 @@ class TestClient(unittest.TestCase):
             self.assertEqual(str(e.exception), expected_error_message)
             # Verify backoff retry happened - should retry 5 times
             self.assertEqual(mock_request.call_count, 5)
+
+    @parameterized.expand([
+        # Below 5xx range — AftershipError, no retry
+        ["status_499", 499, AftershipError, 1],
+        # All 5xx errors (500-599) — AftershipBackoffError, retried
+        ["status_500", 500, AftershipBackoffError, 5],
+        ["status_550", 550, AftershipBackoffError, 5],
+        ["status_599", 599, AftershipBackoffError, 5],
+        # Above 5xx range — AftershipError, no retry
+        ["status_600", 600, AftershipError, 1],
+    ])
+    @patch("time.sleep")
+    def test_5xx_range_boundary_checks(self, test_name, status_code, expected_exception, expected_call_count, mock_sleep):
+        """Test that the correct exception is raised at 5xx range boundaries."""
+        mock_response = MockResponse(status_code)
+
+        with patch.object(self.client._session, "request", return_value=mock_response) as mock_request:
+            with self.assertRaises(expected_exception):
+                self.client._Client__make_request("GET", "https://api.example.com/resource")
+
+            # Verify retry behavior
+            self.assertEqual(mock_request.call_count, expected_call_count)

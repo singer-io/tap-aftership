@@ -11,7 +11,6 @@ from tap_aftership.exceptions import (
     ERROR_CODE_EXCEPTION_MAPPING,
     AftershipBackoffError,
     AftershipError,
-    AftershipNotImplementedError,
     AftershipRateLimitError,
 )
 
