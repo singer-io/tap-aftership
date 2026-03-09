@@ -58,15 +58,14 @@ def raise_for_error(response: requests.Response) -> None:
 
         message = f"HTTP-error-code: {response.status_code}, Error: {error_message}"
 
+        exc = ERROR_CODE_EXCEPTION_MAPPING.get(response.status_code, {}).get(
+            "raise_exception", AftershipError
+        )
+
         # For 5xx errors, use backoff exception if not specifically mapped
-        if 500 <= response.status_code < 600:
-            exc = ERROR_CODE_EXCEPTION_MAPPING.get(response.status_code, {}).get(
-                "raise_exception", AftershipBackoffError
-            )
-        else:
-            exc = ERROR_CODE_EXCEPTION_MAPPING.get(response.status_code, {}).get(
-                "raise_exception", AftershipError
-            )
+        if 500 <= response.status_code < 600 and response.status_code not in ERROR_CODE_EXCEPTION_MAPPING.keys():
+            exc = AftershipBackoffError
+
         raise exc(message, response) from None
 
 def get_retry_after(exception_info):
