@@ -35,7 +35,7 @@ class AftershipConflictError(AftershipError):
     """class representing 409 status code."""
     pass
 
-class AftershipUnprocessableEntityError(AftershipBackoffError):
+class AftershipUnprocessableEntityError(AftershipError):
     """class representing 422 status code."""
     pass
 
@@ -103,18 +103,6 @@ class AftershipInternalServerError(AftershipBackoffError):
     """class representing 500 status code."""
     pass
 
-class AftershipNotImplementedError(AftershipBackoffError):
-    """class representing 501 status code."""
-    pass
-
-class AftershipBadGatewayError(AftershipBackoffError):
-    """class representing 502 status code."""
-    pass
-
-class AftershipServiceUnavailableError(AftershipBackoffError):
-    """class representing 503 status code."""
-    pass
-
 ERROR_CODE_EXCEPTION_MAPPING = {
     400: {
         "raise_exception": AftershipBadRequestError,
@@ -148,17 +136,5 @@ ERROR_CODE_EXCEPTION_MAPPING = {
         "raise_exception": AftershipInternalServerError,
         "message": "The server encountered an unexpected condition which prevented" \
             " it from fulfilling the request."
-    },
-    501: {
-        "raise_exception": AftershipNotImplementedError,
-        "message": "The server does not support the functionality required to fulfill the request."
-    },
-    502: {
-        "raise_exception": AftershipBadGatewayError,
-        "message": "Server received an invalid response."
-    },
-    503: {
-        "raise_exception": AftershipServiceUnavailableError,
-        "message": "API service is currently unavailable."
     }
 }
