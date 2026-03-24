@@ -1,0 +1,349 @@
+{
+    "tap_name": "aftership",
+    "required_config_keys": [
+        "api_key",
+        "start_date"
+    ],
+    "page_size": 100,
+    "next_page_key": "cursor",
+    "pagination_key": "next_cursor",
+    "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    },
+    "params": {},
+    "auth_header_key": "as-api-key",
+    "auth_config_key": "api_access",
+    "base_url": "https://api.aftership.com",
+    "streams": [
+        {
+            "name": "trackings",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "trackings",
+            "path": "tracking/{api_version}/trackings",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/tracking/jh865r66gc6hi-get-trackings"
+        },
+        {
+            "name": "couriers",
+            "key_properties": [
+                "slug"
+            ],
+            "replication_method": "FULL_TABLE",
+            "replication_keys": null,
+            "data_key": "couriers",
+            "path": "tracking/{api_version}/couriers",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/tracking/ukw8ouy82dp1k-get-couriers"
+        },
+        {
+            "name": "courier_connections",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "courier_connections",
+            "path": "tracking/{api_version}/courier-connections",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/tracking/2ar6bpph8n7ye-get-courier-connections"
+        },
+        {
+            "name": "item_returns",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "FULL_TABLE",
+            "replication_keys": null,
+            "data_key": "returns",
+            "path": "returns/{api_version}/returns",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/returns/wpx1lk91k5ima-get-returns"
+        },
+        {
+            "name": "item_tags",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "created_at"
+            ],
+            "data_key": "item_tags",
+            "path": "returns/{api_version}/item-tags",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/returns/sxu3emct2h6is-get-item-tags"
+        },
+        {
+            "name": "query_claims",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "claims",
+            "path": "admin/{api_version}/claims",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/protection/e99b7b198fd97-query-claims"
+        },
+        {
+            "name": "query_coverages",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "coverages",
+            "path": "admin/{api_version}/coverages",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/protection/0202765fded3f-query-coverages"
+        },
+        {
+            "name": "stores",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "stores",
+            "path": "commerce/{api_version}/stores",
+            "parent": null,
+            "children": ["orders", "products"],
+            "doc_link": "https://www.aftership.com/docs/commerce/yc24p1srfyqiv-get-stores"
+        },
+        {
+            "name": "orders",
+            "key_properties": [
+                "id",
+                "store_id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "orders",
+            "path": "commerce/{api_version}/orders",
+            "parent": "stores",
+            "children": ["fulfillments"],
+            "doc_link": "https://www.aftership.com/docs/commerce/kr3dy6e5ma49n-get-orders"
+        },
+        {
+            "name": "products",
+            "key_properties": [
+                "id",
+                "store_id"
+            ],
+            "replication_method": "FULL_TABLE",
+            "replication_keys": null,
+            "data_key": "products",
+            "path": "commerce/{api_version}/products",
+            "parent": "stores",
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/commerce/rloip27l58tm1-get-products"
+        },
+        {
+            "name": "fulfillments",
+            "key_properties": [
+                "id",
+                "store_id",
+                "order_id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "fulfillments",
+            "path": "commerce/{api_version}/fulfillments",
+            "parent": "orders",
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/commerce/6dafeb354dd2b-get-fulfillments"
+        },
+        {
+            "name": "memberships",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "FULL_TABLE",
+            "replication_keys": null,
+            "data_key": "memberships",
+            "path": "admin/{api_version}/memberships",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/members/50fa1b4e7b871-get-memberships"
+        },
+        {
+            "name": "roles",
+            "key_properties": [
+                "code"
+            ],
+            "replication_method": "FULL_TABLE",
+            "replication_keys": null,
+            "data_key": "roles",
+            "path": "admin/{api_version}/roles",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/members/bb5124963ea73-get-roles"
+        },
+        {
+            "name": "shipping_rates",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "rates",
+            "path": "rates",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/shipping/99f88b084657b-get-rates"
+        },
+        {
+            "name": "shipping_labels",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "labels",
+            "path": "labels",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/shipping/c056230c3b6c4-get-labels"
+        },
+        {
+            "name": "shipping_manifests",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "manifests",
+            "path": "manifests",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/shipping/8ba86e501d12e-get-manifests"
+        },
+        {
+            "name": "shipping_couriers",
+            "key_properties": [
+                "slug"
+            ],
+            "replication_method": "FULL_TABLE",
+            "replication_keys": null,
+            "data_key": "couriers",
+            "path": "couriers",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/shipping/89c99df22fcd7-get-all-couriers"
+        },
+        {
+            "name": "cancel_labels",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "cancel_labels",
+            "path": "/cancel-labels",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/shipping/24ec02f862c50-get-the-cancelled-labels"
+        },
+        {
+            "name": "pickups",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "pickups",
+            "path": "pickups",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/shipping/x8mxu5wa7m6y3-get-pickups"
+        },
+        {
+            "name": "cancel_pickups",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "cancel_pickups",
+            "path": "cancel-pickups",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/shipping/35p8o3dsqpaqc-get-the-cancelled-pickups"
+        },
+        {
+            "name": "shipper_accounts",
+            "key_properties": [
+                "id"
+            ],
+            "replication_method": "INCREMENTAL",
+            "replication_keys": [
+                "updated_at"
+            ],
+            "data_key": "shipper_accounts",
+            "path": "shipper-accounts",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/shipping/5742112a2c755-get-shipper-accounts"
+        },
+        {
+            "name": "locations",
+            "key_properties": [
+                "location_id"
+            ],
+            "replication_method": "FULL_TABLE",
+            "replication_keys": null,
+            "data_key": "locations",
+            "path": "locations",
+            "parent": null,
+            "children": [],
+            "doc_link": "https://www.aftership.com/docs/shipping/bdb851fc7dfdc-get-locations"
+        }
+    ],
+    "tap_tester_creds": {
+        "api_key": "TAP_AFTERSHIP_API_KEY "
+    },
+    "author": "Stitch",
+    "third_party_dependencies": [
+        "singer-python==6.1.1",
+        "requests==2.32.4",
+        "backoff==2.2.1"
+    ]
+}

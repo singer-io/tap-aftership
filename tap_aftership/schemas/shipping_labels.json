@@ -1,0 +1,239 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "status": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "tracking_numbers": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        },
+        "files": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "label": {
+                    "type": [
+                        "object",
+                        "null"
+                    ],
+                    "properties": {
+                        "paper_size": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "url": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "file_type": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    }
+                },
+                "invoice": {
+                    "type": [
+                        "object",
+                        "null"
+                    ]
+                },
+                "customs_declaration": {
+                    "type": [
+                        "object",
+                        "null"
+                    ]
+                },
+                "manifest": {
+                    "type": [
+                        "object",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "rate": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "charge_weight": {
+                    "type": [
+                        "object",
+                        "null"
+                    ],
+                    "properties": {
+                        "value": {
+                            "type": [
+                                "number",
+                                "null"
+                            ]
+                        },
+                        "unit": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    }
+                },
+                "total_charge": {
+                    "type": [
+                        "object",
+                        "null"
+                    ],
+                    "properties": {
+                        "amount": {
+                            "type": [
+                                "number",
+                                "null"
+                            ]
+                        },
+                        "currency": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    }
+                },
+                "shipper_account": {
+                    "type": [
+                        "object",
+                        "null"
+                    ],
+                    "properties": {
+                        "id": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "slug": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "description": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    }
+                },
+                "service_type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "service_name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "pickup_deadline": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "booking_cut_off": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "delivery_date": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "format": "date-time"
+                },
+                "transit_time": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "detailed_charges": {
+                    "type": [
+                        "array",
+                        "null"
+                    ],
+                    "items": {
+                        "type": [
+                            "object",
+                            "null"
+                        ]
+                    }
+                },
+                "error_message": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "info_message": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "created_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "updated_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "ship_date": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        }
+    }
+}

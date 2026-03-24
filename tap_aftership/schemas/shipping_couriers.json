@@ -1,0 +1,189 @@
+{
+    "type": "object",
+    "properties": {
+        "slug": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "name": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "operations": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "post@cancel-labels": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "post@labels": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "post@manifests": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "post@rates": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "ship_from": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "ship_to": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "paper_sizes": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            }
+        },
+        "courier_service_types": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "object",
+                    "null"
+                ],
+                "properties": {
+                    "service_type": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "service_name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "ship_from.country": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            }
+        },
+        "courier_box_types": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "object",
+                    "null"
+                ],
+                "properties": {
+                    "box_name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "box_type": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "box_size_cm": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "properties": {
+                            "width": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "height": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "depth": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            }
+                        }
+                    },
+                    "box_size_in": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "properties": {
+                            "width": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "height": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "depth": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "tracking_numbers": {
+            "type": [
+                "boolean",
+                "null"
+            ]
+        }
+    }
+}

@@ -1,0 +1,117 @@
+{
+    "type": "object",
+    "properties": {
+        "labels": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": [
+                    "object",
+                    "null"
+                ],
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "manifested": {
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    }
+                }
+            }
+        },
+        "files": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "manifest": {
+                    "type": [
+                        "object",
+                        "null"
+                    ],
+                    "properties": {
+                        "paper_size": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "url": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "file_type": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "shipper_account": {
+            "type": [
+                "object",
+                "null"
+            ],
+            "properties": {
+                "id": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "slug": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "description": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "status": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "created_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        },
+        "updated_at": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date-time"
+        }
+    }
+}
