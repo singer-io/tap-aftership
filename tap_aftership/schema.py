@@ -101,6 +101,23 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
             field_metadata.pop(stream_name, None)
             error_list.append(stream_name)
 
+    # Remove child streams whose parent was forbidden and no longer exists in the catalog.
+    # Repeat until stable to handle multi-level chains (e.g. stores→orders→fulfillments).
+    while True:
+        orphans = [
+            name for name, stream_cls in STREAMS.items()
+            if name in schemas and stream_cls.parent and stream_cls.parent not in schemas
+        ]
+        if not orphans:
+            break
+        for name in orphans:
+            LOGGER.warning(
+                "Stream '%s' excluded from catalog because its parent stream '%s' is not accessible.",
+                name, STREAMS[name].parent
+            )
+            schemas.pop(name, None)
+            field_metadata.pop(name, None)
+
     if error_list:
         total_stream = len([stream for stream in STREAMS.values() if not stream.parent])
         streams_name = ", ".join(error_list)
