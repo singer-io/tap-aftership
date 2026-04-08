@@ -96,7 +96,9 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
                 if code not in success_codes and message not in success_messages:
                     raise AftershipForbiddenError
         except AftershipForbiddenError:
-            LOGGER.warning("Stream %s does not have read permission", stream_name)
+            LOGGER.warning("Stream %s does not have read permission, excluding from catalog", stream_name)
+            schemas.pop(stream_name, None)
+            field_metadata.pop(stream_name, None)
             error_list.append(stream_name)
 
     if error_list:
@@ -104,14 +106,13 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
         streams_name = ", ".join(error_list)
         if len(error_list) != total_stream:
             message = "The account credentials supplied do not have 'read' access to the following stream(s): {}. "\
-                "The data for these streams would not be collected due to lack of required permission.".format(streams_name)
-            # If at least one stream have read permission then just print warning message for all streams
-            # which does not have read permission
+                "These streams have been excluded from the catalog.".format(streams_name)
+            # If at least one stream has read permission, log a warning and continue with permitted streams only
             LOGGER.warning(message)
         else:
             message = "HTTP-error-code: 403, Error: The account credentials supplied do not have 'read' access to any "\
             "of streams supported by the tap. Data collection cannot be initiated due to lack of permissions."
-            # If none of the streams are having the 'read' access, then the code will raise an error
+            # If none of the streams have 'read' access, raise an error
             raise AftershipForbiddenError(message)
 
     return schemas, field_metadata
