@@ -1,10 +1,20 @@
 """Test that with no fields selected for a stream automatic fields are still
 replicated."""
-from base import aftershipBaseTest
+from base import AftershipBaseTest
 from tap_tester.base_suite_tests.automatic_fields_test import MinimumSelectionTest
 
+NO_READ_PERMISSION_STREAMS = {
+    "item_returns",
+    "item_tags",
+    "query_claims",
+    "query_coverages",
+    "memberships",
+    "roles",
+    "locations",
+}
 
-class aftershipAutomaticFields(MinimumSelectionTest, aftershipBaseTest):
+
+class AftershipAutomaticFields(MinimumSelectionTest, AftershipBaseTest):
     """Test that with no fields selected for a stream automatic fields are
     still replicated."""
 
@@ -12,16 +22,13 @@ class aftershipAutomaticFields(MinimumSelectionTest, aftershipBaseTest):
     def name():
         return "tap_tester_aftership_automatic_fields_test"
 
+    def expected_stream_names(self):
+        return super().expected_stream_names().difference(NO_READ_PERMISSION_STREAMS)
+
     def streams_to_test(self):
-        # streams to exclude from the start date test due to access or insufficient data
-        streams_to_exclude = set({
+        # streams to exclude due to insufficient data in the test environment
+        no_data_streams = {
             "courier_connections",
-            "item_returns",
-            "item_tags",
-            "query_claims",
-            "query_coverages",
-            "memberships",
-            "roles",
             "shipping_rates",
             "shipping_labels",
             "shipping_manifests",
@@ -29,7 +36,5 @@ class aftershipAutomaticFields(MinimumSelectionTest, aftershipBaseTest):
             "cancel_labels",
             "pickups",
             "cancel_pickups",
-            "locations"
-        })
-        return self.expected_stream_names().difference(streams_to_exclude)
-
+        }
+        return self.expected_stream_names().difference(no_data_streams)
