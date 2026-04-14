@@ -1,17 +1,7 @@
 """Test that with no fields selected for a stream automatic fields are still
 replicated."""
-from base import AftershipBaseTest
+from base import AftershipBaseTest, NO_READ_PERMISSION_STREAMS
 from tap_tester.base_suite_tests.automatic_fields_test import MinimumSelectionTest
-
-NO_READ_PERMISSION_STREAMS = {
-    "item_returns",
-    "item_tags",
-    "query_claims",
-    "query_coverages",
-    "memberships",
-    "roles",
-    "locations",
-}
 
 
 class AftershipAutomaticFields(MinimumSelectionTest, AftershipBaseTest):

@@ -1,18 +1,8 @@
-from base import AftershipBaseTest
+from base import AftershipBaseTest, NO_READ_PERMISSION_STREAMS
 from tap_tester.base_suite_tests.all_fields_test import AllFieldsTest
 
 KNOWN_MISSING_FIELDS = {
 
-}
-
-NO_READ_PERMISSION_STREAMS = {
-    "locations",
-    "memberships",
-    "item_returns",
-    "query_claims",
-    "query_coverages",
-    "item_tags",
-    "roles",
 }
 
 

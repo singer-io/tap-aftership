@@ -1,15 +1,5 @@
 from tap_tester.base_suite_tests.pagination_test import PaginationTest
-from base import AftershipBaseTest
-
-NO_READ_PERMISSION_STREAMS = {
-    "item_returns",
-    "item_tags",
-    "query_claims",
-    "query_coverages",
-    "memberships",
-    "roles",
-    "locations",
-}
+from base import AftershipBaseTest, NO_READ_PERMISSION_STREAMS
 
 
 class AftershipPaginationTest(PaginationTest, AftershipBaseTest):

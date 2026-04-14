@@ -10,6 +10,16 @@ from tap_tester import connections, menagerie, runner
 from tap_tester.logger import LOGGER
 from tap_tester.base_suite_tests.base_case import BaseCase
 
+NO_READ_PERMISSION_STREAMS = {
+    "item_returns",
+    "item_tags",
+    "locations",
+    "memberships",
+    "query_claims",
+    "query_coverages",
+    "roles",
+}
+
 
 class AftershipBaseTest(BaseCase):
     """Setup expectations for test sub classes.

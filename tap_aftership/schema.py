@@ -101,9 +101,6 @@ def get_schemas(client) -> Tuple[Dict, Dict]:
             field_metadata.pop(stream_name, None)
             error_list.append(stream_name)
 
-    # Single pass is sufficient because the hierarchy is at most 2 levels deep
-    # (stores → orders/products → fulfillments) and all parent streams are checked
-    # before their children in STREAMS ordering.
     for name, stream_cls in list(STREAMS.items()):
         if name in schemas and stream_cls.parent and stream_cls.parent not in schemas:
             LOGGER.warning(

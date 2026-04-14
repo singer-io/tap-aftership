@@ -2,17 +2,7 @@
 from tap_tester.base_suite_tests.discovery_test import DiscoveryTest
 from tap_tester import menagerie
 
-from base import AftershipBaseTest
-
-NO_READ_PERMISSION_STREAMS = {
-    "item_returns",
-    "item_tags",
-    "query_claims",
-    "query_coverages",
-    "memberships",
-    "roles",
-    "locations",
-}
+from base import AftershipBaseTest, NO_READ_PERMISSION_STREAMS
 
 
 class AftershipDiscoveryTest(DiscoveryTest, AftershipBaseTest):

@@ -1,16 +1,6 @@
 
-from base import AftershipBaseTest
+from base import AftershipBaseTest, NO_READ_PERMISSION_STREAMS
 from tap_tester.base_suite_tests.interrupted_sync_test import InterruptedSyncTest
-
-NO_READ_PERMISSION_STREAMS = {
-    "item_returns",
-    "item_tags",
-    "query_claims",
-    "query_coverages",
-    "memberships",
-    "roles",
-    "locations",
-}
 
 
 class AftershipInterruptedSyncTest(InterruptedSyncTest, AftershipBaseTest):

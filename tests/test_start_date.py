@@ -1,15 +1,5 @@
-from base import AftershipBaseTest
+from base import AftershipBaseTest, NO_READ_PERMISSION_STREAMS
 from tap_tester.base_suite_tests.start_date_test import StartDateTest
-
-NO_READ_PERMISSION_STREAMS = {
-    "item_returns",
-    "item_tags",
-    "query_claims",
-    "query_coverages",
-    "memberships",
-    "roles",
-    "locations",
-}
 
 
 class AftershipStartDateTest(StartDateTest, AftershipBaseTest):

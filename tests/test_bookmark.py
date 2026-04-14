@@ -1,18 +1,8 @@
-from base import AftershipBaseTest
+from base import AftershipBaseTest, NO_READ_PERMISSION_STREAMS
 from tap_tester.base_suite_tests.bookmark_test import BookmarkTest
 
-NO_READ_PERMISSION_STREAMS = {
-    "item_returns",
-    "item_tags",
-    "query_claims",
-    "query_coverages",
-    "memberships",
-    "roles",
-    "locations",
-}
 
-
-class AftershipBookMarkTest(BookmarkTest, AftershipBaseTest):
+class AftershipBookmarkTest(BookmarkTest, AftershipBaseTest):
     """Test tap sets a bookmark and respects it for the next sync of a
     stream."""
     bookmark_format = "%Y-%m-%dT%H:%M:%S.%fZ"
