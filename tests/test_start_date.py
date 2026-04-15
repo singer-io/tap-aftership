@@ -1,8 +1,8 @@
-from base import aftershipBaseTest
+from base import AftershipBaseTest, NO_READ_PERMISSION_STREAMS
 from tap_tester.base_suite_tests.start_date_test import StartDateTest
 
 
-class aftershipStartDateTest(StartDateTest, aftershipBaseTest):
+class AftershipStartDateTest(StartDateTest, AftershipBaseTest):
     """Instantiate start date according to the desired data set and run the
     test."""
 
@@ -16,34 +16,31 @@ class aftershipStartDateTest(StartDateTest, aftershipBaseTest):
     def setUp(self):
         # Restore or clear the shared StartDateTest cache with this class's
         # own snapshot so setUp's condition works correctly.
-        StartDateTest.record_count_by_stream_1 = aftershipStartDateTest._cached_record_count_1
-        StartDateTest.synced_messages_by_stream_1 = aftershipStartDateTest._cached_messages_1
-        StartDateTest.record_count_by_stream_2 = aftershipStartDateTest._cached_record_count_2
-        StartDateTest.synced_messages_by_stream_2 = aftershipStartDateTest._cached_messages_2
+        StartDateTest.record_count_by_stream_1 = AftershipStartDateTest._cached_record_count_1
+        StartDateTest.synced_messages_by_stream_1 = AftershipStartDateTest._cached_messages_1
+        StartDateTest.record_count_by_stream_2 = AftershipStartDateTest._cached_record_count_2
+        StartDateTest.synced_messages_by_stream_2 = AftershipStartDateTest._cached_messages_2
         super().setUp()
 
-        aftershipStartDateTest._cached_record_count_1 = StartDateTest.record_count_by_stream_1
-        aftershipStartDateTest._cached_messages_1 = StartDateTest.synced_messages_by_stream_1
-        aftershipStartDateTest._cached_record_count_2 = StartDateTest.record_count_by_stream_2
-        aftershipStartDateTest._cached_messages_2 = StartDateTest.synced_messages_by_stream_2
+        AftershipStartDateTest._cached_record_count_1 = StartDateTest.record_count_by_stream_1
+        AftershipStartDateTest._cached_messages_1 = StartDateTest.synced_messages_by_stream_1
+        AftershipStartDateTest._cached_record_count_2 = StartDateTest.record_count_by_stream_2
+        AftershipStartDateTest._cached_messages_2 = StartDateTest.synced_messages_by_stream_2
 
     @staticmethod
     def name():
         return "tap_tester_aftership_start_date_test"
 
+    def expected_stream_names(self):
+        return super().expected_stream_names().difference(NO_READ_PERMISSION_STREAMS)
+
     def streams_to_test(self):
-        # streams to exclude from the start date test due to access or insufficient data
-        streams_to_exclude = set({
+        # streams to exclude due to insufficient data or tested separately
+        streams_to_exclude = {
             "courier_connections",
-            "item_returns",
-            "item_tags",
-            "query_claims",
-            "query_coverages",
             "orders",
             "products",
             "fulfillments",
-            "memberships",
-            "roles",
             "shipping_rates",
             "shipping_labels",
             "shipping_manifests",
@@ -52,11 +49,9 @@ class aftershipStartDateTest(StartDateTest, aftershipBaseTest):
             "pickups",
             "cancel_pickups",
             "shipper_accounts",
-            "locations",
             "couriers",
-            # Tested separately with dates that produce differing record counts
-            "trackings"
-        })
+            "trackings",  # Tested separately with dates that produce differing record counts
+        }
         return self.expected_stream_names().difference(streams_to_exclude)
 
     @property
@@ -67,7 +62,7 @@ class aftershipStartDateTest(StartDateTest, aftershipBaseTest):
         return "2026-01-01T00:00:00Z"
 
 
-class aftershipTrackingsStartDateTest(StartDateTest, aftershipBaseTest):
+class AftershipTrackingsStartDateTest(StartDateTest, AftershipBaseTest):
     """Start date test specifically for trackings.
 
     The trackings stream has records starting from 2026-02-06, so the
@@ -81,20 +76,23 @@ class aftershipTrackingsStartDateTest(StartDateTest, aftershipBaseTest):
     _cached_messages_2 = None
 
     def setUp(self):
-        StartDateTest.record_count_by_stream_1 = aftershipTrackingsStartDateTest._cached_record_count_1
-        StartDateTest.synced_messages_by_stream_1 = aftershipTrackingsStartDateTest._cached_messages_1
-        StartDateTest.record_count_by_stream_2 = aftershipTrackingsStartDateTest._cached_record_count_2
-        StartDateTest.synced_messages_by_stream_2 = aftershipTrackingsStartDateTest._cached_messages_2
+        StartDateTest.record_count_by_stream_1 = AftershipTrackingsStartDateTest._cached_record_count_1
+        StartDateTest.synced_messages_by_stream_1 = AftershipTrackingsStartDateTest._cached_messages_1
+        StartDateTest.record_count_by_stream_2 = AftershipTrackingsStartDateTest._cached_record_count_2
+        StartDateTest.synced_messages_by_stream_2 = AftershipTrackingsStartDateTest._cached_messages_2
         super().setUp()
 
-        aftershipTrackingsStartDateTest._cached_record_count_1 = StartDateTest.record_count_by_stream_1
-        aftershipTrackingsStartDateTest._cached_messages_1 = StartDateTest.synced_messages_by_stream_1
-        aftershipTrackingsStartDateTest._cached_record_count_2 = StartDateTest.record_count_by_stream_2
-        aftershipTrackingsStartDateTest._cached_messages_2 = StartDateTest.synced_messages_by_stream_2
+        AftershipTrackingsStartDateTest._cached_record_count_1 = StartDateTest.record_count_by_stream_1
+        AftershipTrackingsStartDateTest._cached_messages_1 = StartDateTest.synced_messages_by_stream_1
+        AftershipTrackingsStartDateTest._cached_record_count_2 = StartDateTest.record_count_by_stream_2
+        AftershipTrackingsStartDateTest._cached_messages_2 = StartDateTest.synced_messages_by_stream_2
 
     @staticmethod
     def name():
         return "tap_tester_aftership_trackings_start_date_test"
+
+    def expected_stream_names(self):
+        return super().expected_stream_names().difference(NO_READ_PERMISSION_STREAMS)
 
     def streams_to_test(self):
         return {"trackings"}

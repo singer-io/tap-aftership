@@ -1,9 +1,9 @@
 
-from base import aftershipBaseTest
+from base import AftershipBaseTest, NO_READ_PERMISSION_STREAMS
 from tap_tester.base_suite_tests.interrupted_sync_test import InterruptedSyncTest
 
 
-class aftershipInterruptedSyncTest(InterruptedSyncTest, aftershipBaseTest):
+class AftershipInterruptedSyncTest(InterruptedSyncTest, AftershipBaseTest):
     """Test tap sets a bookmark and respects it for the next sync of a
     stream."""
 
@@ -11,29 +11,25 @@ class aftershipInterruptedSyncTest(InterruptedSyncTest, aftershipBaseTest):
     def name():
         return "tap_tester_aftership_interrupted_sync_test"
 
+    def expected_stream_names(self):
+        return super().expected_stream_names().difference(NO_READ_PERMISSION_STREAMS)
+
     def streams_to_test(self):
-        # streams to exclude from the start date test due to access or insufficient data
-        streams_to_exclude = set({
+        # streams to exclude due to access or insufficient/non-deterministic data
+        streams_to_exclude = {
             "courier_connections",
-            "item_returns",
-            "item_tags",
-            "query_claims",
-            "query_coverages",
-            "orders",  # Data changes between syncs causing test failures
+            "orders",          # Data changes between syncs causing test failures
             "products",
-            "fulfillments",  # Data changes between syncs causing test failures
-            "memberships",
-            "roles",
+            "fulfillments",    # Data changes between syncs causing test failures
             "shipping_rates",
             "shipping_manifests",
             "shipping_couriers",
             "cancel_labels",
             "pickups",
             "cancel_pickups",
-            "locations",
             "couriers",
-            "trackings",  # API returns records in non-deterministic order, causing interrupted sync test to fail
-        })
+            "trackings",       # API returns records in non-deterministic order
+        }
         return self.expected_stream_names().difference(streams_to_exclude)
 
 

@@ -2,19 +2,21 @@
 from tap_tester.base_suite_tests.discovery_test import DiscoveryTest
 from tap_tester import menagerie
 
-from base import aftershipBaseTest
+from base import AftershipBaseTest, NO_READ_PERMISSION_STREAMS
 
 
-class aftershipDiscoveryTest(DiscoveryTest, aftershipBaseTest):
+class AftershipDiscoveryTest(DiscoveryTest, AftershipBaseTest):
     """Test tap discovery mode and metadata conforms to standards."""
 
     @staticmethod
     def name():
         return "tap_tester_aftership_discovery_test"
 
+    def expected_stream_names(self):
+        return super().expected_stream_names().difference(NO_READ_PERMISSION_STREAMS)
+
     def streams_to_test(self):
-        streams_to_exclude = set({})
-        return self.expected_stream_names().difference(streams_to_exclude)
+        return self.expected_stream_names()
 
     def test_parent_stream(self):
         """
