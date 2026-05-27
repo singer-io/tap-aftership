@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 
 setup(name="tap-aftership",
-      version="0.0.1",
+      version="0.0.2",
       description="Singer.io tap for extracting data from aftership API",
       author="Stitch",
       url="http://singer.io",
@@ -11,10 +11,14 @@ setup(name="tap-aftership",
       py_modules=["tap_aftership"],
       install_requires=[
         "singer-python==6.1.1",
-        "requests==2.32.4",
+        "requests==2.33.0",
         "backoff==2.2.1",
-        "parameterized"
       ],
+      extras_require={
+        "dev": [
+          "parameterized",
+        ],
+      },
       entry_points="""
           [console_scripts]
           tap-aftership=tap_aftership:main
