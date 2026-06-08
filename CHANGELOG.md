@@ -1,2 +1,6 @@
-## 0.0.1
+# Changelog
+
+# 0.0.2
+  * Bump requests to 2.33.0 for security updates [#8](https://github.com/singer-io/tap-aftership/pull/8)
+
   * Initial Commit
