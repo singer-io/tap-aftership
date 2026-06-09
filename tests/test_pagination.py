@@ -24,5 +24,6 @@ class AftershipPaginationTest(PaginationTest, AftershipBaseTest):
             "cancel_labels",
             "pickups",
             "cancel_pickups",
+            "trackings", # not enough data
         }
         return self.expected_stream_names().difference(no_data_streams)
